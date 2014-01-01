@@ -1,0 +1,12 @@
+[
+{
+	"modid": "industrialization",
+	"name": "Industrialization",
+	"version": "@VERSION@",
+	"description": "[description pending]",
+	"authors": [ "dmillerw" ],
+	"dependencies": [
+		"mod_MinecraftForge"
+	]
+}
+]
