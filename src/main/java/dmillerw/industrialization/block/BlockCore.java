@@ -1,6 +1,6 @@
 package dmillerw.industrialization.block;
 
-import com.dmillerw.remoteIO.block.tile.TileCore;
+import dmillerw.industrialization.block.tile.TileCore;
 import dmillerw.industrialization.core.TabIndustrialization;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

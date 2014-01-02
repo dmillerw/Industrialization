@@ -1,5 +1,7 @@
 package dmillerw.industrialization.block;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import dmillerw.industrialization.block.tile.TileTable;
 import dmillerw.industrialization.core.IDHandler;
 import net.minecraft.block.Block;
 
@@ -17,7 +19,9 @@ public class BlockHandler {
     }
 
     public static void initialize() {
-
+        blockTable = new BlockTable(blockTableID).setUnlocalizedName("table");
+        GameRegistry.registerBlock(blockTable, "table");
+        GameRegistry.registerTileEntity(TileTable.class, "table_tile");
     }
 
 }

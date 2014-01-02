@@ -1,6 +1,9 @@
 package dmillerw.industrialization.block.tile;
 
+import dmillerw.industrialization.recipe.CrushingManager;
+import dmillerw.industrialization.recipe.CrushingRecipe;
 import dmillerw.industrialization.util.UtilStack;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +42,16 @@ public class TileTable extends TileCore {
 
     @Override
     public void onNeighborBlockUpdate() {
+        if (contents != null) {
+            if (worldObj.getBlockId(xCoord, yCoord + 1, zCoord) == Block.blockIron.blockID && worldObj.getBlockId(xCoord, yCoord + 2, zCoord) == Block.pistonMoving.blockID) {
+                CrushingRecipe recipe = CrushingManager.INSTANCE.getRecipeFor(contents);
 
+                if (recipe != null) {
+                    contents = recipe.getOutput();
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                }
+            }
+        }
     }
 
     @Override
