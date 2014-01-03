@@ -1,10 +1,12 @@
 package dmillerw.industrialization.recipe;
 
+import dmillerw.industrialization.core.ore.OreHandler;
+import dmillerw.industrialization.core.ore.OreWrapper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,6 +15,18 @@ import java.util.Set;
 public class CrushingManager {
 
     public static final CrushingManager INSTANCE = new CrushingManager();
+
+    @ForgeSubscribe
+    public void onOreDictionaryRegistration(OreDictionary.OreRegisterEvent event) {
+        if (event.Name.startsWith("dust")) { // Found a dust, so assume it has an attached ore block, and generate a crushed Item for it
+            String oreTag = event.Name.replace("dust", "ore");
+            ItemStack oreBlock = OreDictionary.getOres(oreTag).get(0);
+
+            if (oreBlock != null) {
+
+            }
+        }
+    }
 
     public Set<CrushingRecipe> recipes = new HashSet<CrushingRecipe>();
 
@@ -38,18 +52,10 @@ public class CrushingManager {
         /* NORMAL RECIPES */
 
         /* ORE DICTIONARY HANDLING */
-        for (String ore : OreDictionary.getOreNames()) {
-            if (ore.startsWith("ore")) {
-                List<ItemStack> oreBlocks = OreDictionary.getOres(ore);
-                List<ItemStack> oreDusts = OreDictionary.getOres(ore.replace("ore", "dust"));
-
-                if (oreBlocks != null && !oreBlocks.isEmpty() && oreDusts != null && !oreDusts.isEmpty()) {
-                    for (ItemStack block : oreBlocks) {
-                        if (oreDusts.get(0) != null && block != null) {
-                            System.out.println ("adding " + block.getDisplayName() + " to " + oreDusts.get(0).getDisplayName() + " crushing recipe");
-                            registerRecipe(block, oreDusts.get(0));
-                        }
-                    }
+        for (OreWrapper ore : OreHandler.INSTANCE.getRegisteredOres()) {
+            if (ore.getOreBlocks() != null && ore.getOreBlocks().length > 0 && ore.getGrinding() != null && ore.getDust() != null) {
+                for (ItemStack block : ore.getOreBlocks()) {
+                    registerRecipe(block, ore.getDust());
                 }
             }
         }

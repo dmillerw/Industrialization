@@ -5,11 +5,15 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import dmillerw.industrialization.block.BlockHandler;
-import dmillerw.industrialization.core.IDHandler;
+import dmillerw.industrialization.core.IDAllocator;
+import dmillerw.industrialization.core.ore.OreHandler;
+import dmillerw.industrialization.core.ore.OreWrapper;
 import dmillerw.industrialization.core.proxy.ServerProxy;
+import dmillerw.industrialization.item.ItemHandler;
 import dmillerw.industrialization.lib.ModInfo;
 import dmillerw.industrialization.recipe.CrushingManager;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 
@@ -30,10 +34,16 @@ public class Industrialization {
 
         this.config.load();
 
-        BlockHandler.initializeIDs(new IDHandler(this.config, 2000));
+        BlockHandler.initializeIDs(new IDAllocator(this.config, 2000));
         BlockHandler.initialize();
 
+        ItemHandler.initializeIDs(new IDAllocator(this.config, 20000));
+        ItemHandler.initialize();
+
         proxy.registerRenders();
+
+        OreHandler.INSTANCE.addVanillaBlocks();
+        MinecraftForge.EVENT_BUS.register(OreHandler.INSTANCE);
 
         if (this.config.hasChanged()) {
             this.config.save();

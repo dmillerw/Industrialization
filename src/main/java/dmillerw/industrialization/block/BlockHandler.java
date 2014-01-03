@@ -2,7 +2,7 @@ package dmillerw.industrialization.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import dmillerw.industrialization.block.tile.TileTable;
-import dmillerw.industrialization.core.IDHandler;
+import dmillerw.industrialization.core.IDAllocator;
 import net.minecraft.block.Block;
 
 /**
@@ -14,7 +14,7 @@ public class BlockHandler {
 
     public static Block blockTable;
 
-    public static void initializeIDs(IDHandler config) {
+    public static void initializeIDs(IDAllocator config) {
         blockTableID = config.getBlock("table");
     }
 

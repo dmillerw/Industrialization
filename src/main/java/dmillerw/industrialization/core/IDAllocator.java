@@ -5,13 +5,13 @@ import net.minecraftforge.common.Configuration;
 /**
  * Created by Dylan Miller on 1/1/14
  */
-public class IDHandler {
+public class IDAllocator {
 
     private final Configuration config;
 
     private int currentID;
 
-    public IDHandler(Configuration config, int startID) {
+    public IDAllocator(Configuration config, int startID) {
         this.config = config;
         this.currentID = startID;
     }
