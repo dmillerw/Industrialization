@@ -7,7 +7,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
 import dmillerw.industrialization.core.ore.OreHandler;
-import dmillerw.industrialization.core.ore.OreWrapper;
 import dmillerw.industrialization.core.proxy.ServerProxy;
 import dmillerw.industrialization.item.ItemHandler;
 import dmillerw.industrialization.lib.ModInfo;
@@ -34,10 +33,10 @@ public class Industrialization {
 
         this.config.load();
 
-        BlockHandler.initializeIDs(new IDAllocator(this.config, 2000));
+        BlockHandler.initializeIDs(new IDAllocator(this.config, 3000));
         BlockHandler.initialize();
 
-        ItemHandler.initializeIDs(new IDAllocator(this.config, 20000));
+        ItemHandler.initializeIDs(new IDAllocator(this.config, 15000));
         ItemHandler.initialize();
 
         proxy.registerRenders();

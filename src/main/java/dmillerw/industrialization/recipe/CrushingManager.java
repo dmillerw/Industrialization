@@ -55,7 +55,7 @@ public class CrushingManager {
         for (OreWrapper ore : OreHandler.INSTANCE.getRegisteredOres()) {
             if (ore.getOreBlocks() != null && ore.getOreBlocks().length > 0 && ore.getGrinding() != null && ore.getDust() != null) {
                 for (ItemStack block : ore.getOreBlocks()) {
-                    registerRecipe(block, ore.getDust());
+                    registerRecipe(block, ore.getGrinding());
                 }
             }
         }

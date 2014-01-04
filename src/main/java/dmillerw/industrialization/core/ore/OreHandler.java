@@ -57,6 +57,7 @@ public class OreHandler {
             System.out.println("Found BLOCK for " + baseTag);
             OreWrapper ore = getOre(baseTag);
             ore.addBlock(oreStack);
+            ore.generateGrinding();
             replace(ore);
         } else if (oreTag.startsWith("dust") && !(oreTag.contains("Tiny"))) {
             String baseTag = oreTag.substring("dust".length());

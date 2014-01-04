@@ -18,7 +18,7 @@ public class ItemHandler {
     }
 
     public static void initialize() {
-        itemGrinding = new ItemGrinding(itemGrindingID);
+        itemGrinding = new ItemGrinding(itemGrindingID).setUnlocalizedName("grinding");
         GameRegistry.registerItem(itemGrinding, "grinding");
     }
 

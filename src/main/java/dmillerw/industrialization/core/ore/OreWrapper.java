@@ -19,12 +19,14 @@ public class OreWrapper {
 
     public OreWrapper(String oreTag) {
         this.oreTag = oreTag;
-
-        this.grinding = ItemGrinding.getGrinding(oreTag);
     }
 
     public void addBlock(ItemStack block) {
         oreBlocks.add(block);
+    }
+
+    public void generateGrinding() {
+        this.grinding = ItemGrinding.getGrinding(oreTag);
     }
 
     public void setDust(ItemStack dust) {
