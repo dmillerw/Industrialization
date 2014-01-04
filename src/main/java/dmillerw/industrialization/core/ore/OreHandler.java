@@ -26,7 +26,7 @@ public class OreHandler {
         return ores;
     }
 
-    private OreWrapper getOre(String oreTag) {
+    public OreWrapper getOre(String oreTag) {
         if (!registeredOres.containsKey(oreTag)) {
             OreWrapper ore = new OreWrapper(oreTag);
             registeredOres.put(oreTag, ore);
@@ -46,15 +46,23 @@ public class OreHandler {
         }
     }
 
+    /** Clears out any registered ores that don't have both a block and a dust defined */
+    public void clean() {
+        for (OreWrapper ore : getRegisteredOres()) {
+            if (ore.getOreBlocks().length == 0 || ore.getDust() == null) {
+                registeredOres.remove(ore.oreTag);
+            }
+        }
+    }
+
     @ForgeSubscribe
     public void oreDictionaryEvent(OreDictionary.OreRegisterEvent event) {
         handleOre(event.Name, event.Ore);
     }
 
-    public void handleOre(String oreTag, ItemStack oreStack) {
+    private void handleOre(String oreTag, ItemStack oreStack) {
         if (oreTag.startsWith("ore")) {
             String baseTag = oreTag.substring("ore".length());
-            System.out.println("Found BLOCK for " + baseTag);
             OreWrapper ore = getOre(baseTag);
             ore.addBlock(oreStack);
             ore.generateGrinding();
@@ -64,7 +72,6 @@ public class OreHandler {
             OreWrapper ore = getOre(baseTag);
 
             if (ore.getDust() == null) {
-                System.out.println("Found DUST for " + baseTag);
                 ore.setDust(oreStack);
                 replace(ore);
             }
