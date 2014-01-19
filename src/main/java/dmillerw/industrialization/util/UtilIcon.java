@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
-import java.io.IOException;
-
 /**
  * Created by Dylan Miller on 1/4/14
  */
@@ -47,8 +45,6 @@ public class UtilIcon {
         String name = icon.getIconName();
         String mod = "";
 
-        System.out.println(name);
-
         if (!name.contains(":")) {
             mod = "minecraft";
         } else {
@@ -56,7 +52,7 @@ public class UtilIcon {
             name = name.trim();
             name = name.substring(name.indexOf(":") + 1); // Strips mod prefix
             if (name.contains(":")) {
-                name = name.substring(0, name.indexOf(":")); // Strips any remaining colons
+                name = name.substring(0, name.indexOf(":")); // Strips any remaining colons. IC2 icon names seem to have one appended on the end
             }
         }
 
@@ -64,12 +60,7 @@ public class UtilIcon {
     }
 
     public static Resource getResource(ResourceLocation location) {
-        try {
-            return Minecraft.getMinecraft().getResourceManager().getResource(location);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return Minecraft.getMinecraft().getResourceManager().getResource(location);
     }
 
 }

@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class ItemGrinding extends Item {
 
-    private static final Color GRAY_TARGET = new Color(143, 143, 143);
+    private static final Color GRAY_TARGET = new Color(100, 100, 100);
 
     public static Map<String, Color> oreColorCache = new HashMap<String, Color>();
 
@@ -90,8 +90,7 @@ public class ItemGrinding extends Item {
         }
 
         Color myColor = oreColorCache.get(oreTag);
-        java.awt.Color color = new java.awt.Color(myColor.r, myColor.g, myColor.b); //TODO Fix my toInt method
-        return color.getRGB();
+        return myColor.toInt();
     }
 
     @Override
@@ -132,8 +131,8 @@ public class ItemGrinding extends Item {
     public void registerIcons(IconRegister register) {
         this.icons = new Icon[2];
 
-        this.icons[0] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "grinding_base");
-        this.icons[1] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "grinding_overlay");
+        this.icons[0] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "grinding/grinding_base");
+        this.icons[1] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "grinding/grinding_overlay");
     }
 
 }

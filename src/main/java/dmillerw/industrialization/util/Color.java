@@ -60,10 +60,9 @@ public class Color {
     }
 
     public int toInt() {
-        int color = r;
-        color = (color << 8 & 255) + g;
-        color = (color << 8 & 255) + b;
-        return color;
+        return ((r & 0xFF) << 16) |
+               ((g & 0xFF) << 8) |
+               ((b & 0xFF) << 0);
     }
 
     public void apply() {

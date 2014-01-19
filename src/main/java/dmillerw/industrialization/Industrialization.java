@@ -46,10 +46,11 @@ public class Industrialization {
             this.config.save();
         }
 
-        proxy.registerRenders();
-
         OreHandler.INSTANCE.addVanillaBlocks();
+
         MinecraftForge.EVENT_BUS.register(OreHandler.INSTANCE);
+
+        proxy.registerRenders();
     }
 
     @Mod.EventHandler
