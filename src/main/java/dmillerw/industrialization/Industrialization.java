@@ -36,11 +36,9 @@ public class Industrialization {
 
         this.config.load();
 
-        BlockHandler.initializeIDs(new IDAllocator(this.config, 3000));
-        BlockHandler.initialize();
+        BlockHandler.initialize(new IDAllocator(this.config, 3000));
 
-        ItemHandler.initializeIDs(new IDAllocator(this.config, 15000));
-        ItemHandler.initialize();
+        ItemHandler.initialize(new IDAllocator(this.config, 15000));
 
         if (this.config.hasChanged()) {
             this.config.save();

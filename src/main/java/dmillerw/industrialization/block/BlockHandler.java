@@ -14,11 +14,11 @@ public class BlockHandler {
 
     public static Block blockTable;
 
-    public static void initializeIDs(IDAllocator config) {
+    public static void initialize(IDAllocator config) {
+        /* IDS */
         blockTableID = config.getBlock("table");
-    }
 
-    public static void initialize() {
+        /* INIT */
         blockTable = new BlockTable(blockTableID).setUnlocalizedName("table");
         GameRegistry.registerBlock(blockTable, "table");
         GameRegistry.registerTileEntity(TileTable.class, "table_tile");

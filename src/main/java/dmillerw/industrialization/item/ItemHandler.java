@@ -13,11 +13,11 @@ public class ItemHandler {
 
     public static Item itemGrinding;
 
-    public static void initializeIDs(IDAllocator config) {
+    public static void initialize(IDAllocator config) {
+        /* IDS */
         itemGrindingID = config.getItem("grinding");
-    }
 
-    public static void initialize() {
+        /* INIT */
         itemGrinding = new ItemGrinding(itemGrindingID).setUnlocalizedName("grinding");
         GameRegistry.registerItem(itemGrinding, "grinding");
     }
