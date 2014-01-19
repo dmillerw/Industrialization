@@ -24,9 +24,9 @@ public class Color {
             bBucket += color.b;
         }
 
-        rBucket /= colors.length;
-        gBucket /= colors.length;
-        bBucket /= colors.length;
+        rBucket /= (colors.length > 0 ? colors.length : 1);
+        gBucket /= (colors.length > 0 ? colors.length : 1);
+        bBucket /= (colors.length > 0 ? colors.length : 1);
 
         return new Color(Math.min(255, rBucket), Math.min(255, gBucket), Math.min(255, bBucket));
     }
@@ -63,6 +63,10 @@ public class Color {
         return ((r & 0xFF) << 16) |
                ((g & 0xFF) << 8) |
                ((b & 0xFF) << 0);
+    }
+
+    public boolean grayscale() {
+        return (r == g) && (r == b);
     }
 
     public void apply() {

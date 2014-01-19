@@ -27,8 +27,6 @@ import java.util.Map;
  */
 public class ItemGrinding extends Item {
 
-    private static final Color GRAY_TARGET = new Color(100, 100, 100);
-
     public static Map<String, Color> oreColorCache = new HashMap<String, Color>();
 
     public static ItemStack getGrinding(String oreTag) {
@@ -77,7 +75,7 @@ public class ItemGrinding extends Item {
                     for (int j=0; j<16; j++) {
                         Color pixel = new Color(oreImage.getRGB(i, j));
 
-                        if (!Color.similarColor(GRAY_TARGET, pixel, 50)) {
+                        if (!pixel.grayscale()) {
                             colors.add(pixel);
                         }
                     }

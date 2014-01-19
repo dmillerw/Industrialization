@@ -63,19 +63,27 @@ public class OreHandler {
     private void handleOre(String oreTag, ItemStack oreStack) {
         if (oreTag.startsWith("ore")) {
             String baseTag = oreTag.substring("ore".length());
-            OreWrapper ore = getOre(baseTag);
-            ore.addBlock(oreStack);
-            ore.generateGrinding();
-            replace(ore);
-        } else if (oreTag.startsWith("dust") && !(oreTag.contains("Tiny"))) {
-            String baseTag = oreTag.substring("dust".length());
-            OreWrapper ore = getOre(baseTag);
-
-            if (ore.getDust() == null) {
-                ore.setDust(oreStack);
+            if (!blacklisted(baseTag)) {
+                OreWrapper ore = getOre(baseTag);
+                ore.addBlock(oreStack);
+                ore.generateGrinding();
                 replace(ore);
             }
+        } else if (oreTag.startsWith("dust") && !(oreTag.contains("Tiny"))) {
+            String baseTag = oreTag.substring("dust".length());
+            if (!blacklisted(oreTag)) {
+                OreWrapper ore = getOre(baseTag);
+
+                if (ore.getDust() == null) {
+                    ore.setDust(oreStack);
+                    replace(ore);
+                }
+            }
         }
+    }
+
+    private boolean blacklisted(String oreTag) {
+        return (oreTag.equalsIgnoreCase("coal") || oreTag.equalsIgnoreCase("certusquartz"));
     }
 
 }
