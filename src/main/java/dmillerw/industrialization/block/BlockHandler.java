@@ -1,8 +1,8 @@
 package dmillerw.industrialization.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import dmillerw.industrialization.block.item.ItemBlockGeneral;
 import dmillerw.industrialization.block.tile.TileFilter;
-import dmillerw.industrialization.block.tile.TileTable;
 import dmillerw.industrialization.core.IDAllocator;
 import net.minecraft.block.Block;
 
@@ -11,21 +11,20 @@ import net.minecraft.block.Block;
  */
 public class BlockHandler {
 
-    public static int blockTableID;
+    public static int blockGeneralID;
     public static int blockFilterID;
 
-    public static Block blockTable;
+    public static Block blockGeneral;
     public static Block blockFilter;
 
     public static void initialize(IDAllocator config) {
         /* IDS */
-        blockTableID = config.getBlock("table");
+        blockGeneralID = config.getBlock("general");
         blockFilterID = config.getBlock("filter");
 
         /* INIT */
-        blockTable = new BlockTable(blockTableID).setUnlocalizedName("table");
-        GameRegistry.registerBlock(blockTable, "table");
-        GameRegistry.registerTileEntity(TileTable.class, "table_tile");
+        blockGeneral = new BlockGeneral(blockGeneralID).setUnlocalizedName("general");
+        GameRegistry.registerBlock(blockGeneral, ItemBlockGeneral.class, "general");
 
         blockFilter = new BlockFilter(blockFilterID).setUnlocalizedName("filter");
         GameRegistry.registerBlock(blockFilter, "filter");

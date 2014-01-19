@@ -20,7 +20,7 @@ public class TabIndustrialization extends CreativeTabs {
 
     @Override
     public ItemStack getIconItemStack() {
-        return new ItemStack(BlockHandler.blockTable);
+        return new ItemStack(BlockHandler.blockGeneral);
     }
 
 }
