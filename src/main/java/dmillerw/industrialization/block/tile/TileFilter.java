@@ -1,23 +1,41 @@
 package dmillerw.industrialization.block.tile;
 
-import dmillerw.industrialization.item.ItemHandler;
+import dmillerw.industrialization.recipe.FilterManager;
+import dmillerw.industrialization.recipe.FilterRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
+
+import java.util.List;
 
 /**
  * Created by Dylan Miller on 1/18/14
  */
-public class TileFilter extends TileCore implements IInventory {
-
-    private ItemStack[] inv = new ItemStack[getSizeInventory()];
+public class TileFilter extends TileCore {
 
     private boolean waterFlowing = false;
+
+    @Override
+    public void updateEntity() {
+        if (!worldObj.isRemote && waterFlowing) {
+            List<EntityItem> nearbyItems = worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 1.5, zCoord + 1));
+
+            if (nearbyItems != null && nearbyItems.size() > 0) {
+                for (EntityItem item : nearbyItems) {
+                    FilterRecipe recipe = FilterManager.INSTANCE.getRecipeFor(item.getEntityItem());
+
+                    if (recipe != null) {
+                        EntityItem newItem = new EntityItem(worldObj, xCoord + 0.5, yCoord - 0.5, zCoord + 0.5, recipe.getOutput());
+                        worldObj.spawnEntityInWorld(newItem);
+                        item.setDead();
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public void onBlockAdded() {
@@ -47,33 +65,12 @@ public class TileFilter extends TileCore implements IInventory {
 
     @Override
     public void writeCustomNBT(NBTTagCompound nbt) {
-        NBTTagList tagList = new NBTTagList();
 
-        for (int i = 0; i < inv.length; ++i) {
-            if (inv[i] != null) {
-                NBTTagCompound tagCompound = new NBTTagCompound();
-                tagCompound.setByte("Slot", (byte) i);
-                inv[i].writeToNBT(tagCompound);
-                tagList.appendTag(tagCompound);
-            }
-        }
-
-        nbt.setTag("Items", tagList);
     }
 
     @Override
     public void readCustomNBT(NBTTagCompound nbt) {
-        NBTTagList tagList = nbt.getTagList("Items");
 
-        inv = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < tagList.tagCount(); ++i) {
-            NBTTagCompound tagCompound = (NBTTagCompound) tagList.tagAt(i);
-            byte slotIndex = tagCompound.getByte("Slot");
-            if (slotIndex >= 0 && slotIndex < inv.length) {
-                inv[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
-            }
-        }
     }
 
     private ForgeDirection flowDirectionFromDouble(double flow) {
@@ -93,91 +90,6 @@ public class TileFilter extends TileCore implements IInventory {
         }
 
         return ForgeDirection.UNKNOWN;
-    }
-
-    /* IINVENTORY */
-    @Override
-    public int getSizeInventory() {
-        return 9;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inv[slot];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amount) {
-        ItemStack itemStack = getStackInSlot(slot);
-        if (itemStack != null) {
-            if (itemStack.stackSize <= amount) {
-                setInventorySlotContents(slot, null);
-            } else {
-                itemStack = itemStack.splitStack(amount);
-                if (itemStack.stackSize == 0) {
-                    setInventorySlotContents(slot, null);
-                }
-            }
-        }
-
-        return itemStack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        if (inv[slot] != null) {
-            ItemStack itemStack = inv[slot];
-            inv[slot] = null;
-            return itemStack;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        inv[slot] = stack;
-
-        if (inv[slot].stackSize > getInventoryStackLimit()) {
-            inv[slot].stackSize = getInventoryStackLimit();
-        }
-
-        this.onInventoryChanged();
-    }
-
-    @Override
-    public String getInvName() {
-        return "Filter";
-    }
-
-    @Override
-    public boolean isInvNameLocalized() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer entityPlayer) {
-        return true;
-    }
-
-    @Override
-    public void openChest() {
-
-    }
-
-    @Override
-    public void closeChest() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return stack != null && stack.getItem() == ItemHandler.itemGrinding;
     }
 
 }

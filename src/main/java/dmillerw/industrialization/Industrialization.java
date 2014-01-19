@@ -20,6 +20,7 @@ import dmillerw.industrialization.item.ItemHandler;
 import dmillerw.industrialization.lib.ModInfo;
 import dmillerw.industrialization.network.PacketHandler;
 import dmillerw.industrialization.recipe.CrushingManager;
+import dmillerw.industrialization.recipe.FilterManager;
 import dmillerw.industrialization.util.UtilString;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -76,11 +77,12 @@ public class Industrialization {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        CrushingManager.INSTANCE.initializeRecipes();
-
         // It's assumed that all ore dictionary registrations have been completed by the time we hit post-init
         OreHandler.INSTANCE.clean();
         OreHandler.INSTANCE.fillGrindings();
+
+        CrushingManager.INSTANCE.initializeRecipes();
+        FilterManager.INSTANCE.initializeRecipes();
 
         this.grindingMapper.save();
 

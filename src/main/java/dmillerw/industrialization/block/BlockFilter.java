@@ -6,10 +6,15 @@ import dmillerw.industrialization.block.tile.TileFilter;
 import dmillerw.industrialization.core.handler.GuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 /**
  * Created by Dylan Miller on 1/1/14
@@ -39,7 +44,7 @@ public class BlockFilter extends BlockCore {
 
     @Override
     public Icon getIcon(int side, int meta) {
-        return Block.fenceIron.getIcon(0, 0); // Temp?Ti
+        return Block.fenceIron.getIcon(0, 0); // Temp?
     }
 
     @Override

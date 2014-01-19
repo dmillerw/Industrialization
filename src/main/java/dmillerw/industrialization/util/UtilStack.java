@@ -10,6 +10,15 @@ import net.minecraft.world.World;
  */
 public class UtilStack {
 
+    public static ItemStack resize(ItemStack stack, int size) {
+        ItemStack newStack = stack.copy();
+        newStack.stackSize = size;
+        if (newStack.stackSize > newStack.getMaxStackSize()) {
+            newStack.stackSize = newStack.getMaxStackSize();
+        }
+        return newStack;
+    }
+
     public static void dropStack(TileEntity tile, ItemStack stack) {
         dropStack(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, stack);
     }
