@@ -74,8 +74,6 @@ public class OreHandler {
                 ore.addBlock(oreStack);
                 if (ore.getGrinding() == null) {
                     ore.generateGrinding();
-                    System.out.println(baseTag);
-                    System.out.println(baseTag + " dust is null? " + ore.getGrinding() == null);
                 }
                 replace(ore);
             }
