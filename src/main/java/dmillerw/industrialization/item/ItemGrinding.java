@@ -1,5 +1,6 @@
 package dmillerw.industrialization.item;
 
+import dmillerw.industrialization.Industrialization;
 import dmillerw.industrialization.core.TabIndustrialization;
 import dmillerw.industrialization.core.ore.OreHandler;
 import dmillerw.industrialization.core.ore.OreWrapper;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 
 import javax.imageio.ImageIO;
@@ -29,26 +29,9 @@ public class ItemGrinding extends Item {
 
     public static Map<String, Color> oreColorCache = new HashMap<String, Color>();
 
-    public static ItemStack getGrinding(String oreTag) {
-        ItemStack grinding = new ItemStack(ItemHandler.itemGrinding);
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setString("oreTag", oreTag);
-        grinding.setTagCompound(nbt);
-        return grinding;
-    }
-
-    public static String getTag(ItemStack stack) {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-
-        NBTTagCompound nbt = stack.getTagCompound();
-
-        if (nbt.hasKey("oreTag")) {
-            return nbt.getString("oreTag");
-        } else {
-            return "NULL";
-        }
+    public static final String getGrindingTag(ItemStack stack) {
+        String id = Industrialization.instance.grindingMapper.getIDForStack(stack);
+        return id.substring(id.lastIndexOf("_") + 1);
     }
 
     private Icon[] icons;
@@ -94,7 +77,7 @@ public class ItemGrinding extends Item {
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
         if (pass > 0) {
-            return getColorFromOre(getTag(stack)); // Grinding color
+            return getColorFromOre(getGrindingTag(stack)); // Grinding color
         } else {
             return 0xFFFFFF; // WHITE
         }
@@ -112,7 +95,7 @@ public class ItemGrinding extends Item {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        String tag = getTag(stack);
+        String tag = getGrindingTag(stack);
         return super.getUnlocalizedName(stack) + "." + tag.toLowerCase();
     }
 

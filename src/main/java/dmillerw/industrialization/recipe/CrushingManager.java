@@ -2,9 +2,8 @@ package dmillerw.industrialization.recipe;
 
 import dmillerw.industrialization.core.ore.OreHandler;
 import dmillerw.industrialization.core.ore.OreWrapper;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,18 +14,6 @@ import java.util.Set;
 public class CrushingManager {
 
     public static final CrushingManager INSTANCE = new CrushingManager();
-
-    @ForgeSubscribe
-    public void onOreDictionaryRegistration(OreDictionary.OreRegisterEvent event) {
-        if (event.Name.startsWith("dust")) { // Found a dust, so assume it has an attached ore block, and generate a crushed Item for it
-            String oreTag = event.Name.replace("dust", "ore");
-            ItemStack oreBlock = OreDictionary.getOres(oreTag).get(0);
-
-            if (oreBlock != null) {
-
-            }
-        }
-    }
 
     public Set<CrushingRecipe> recipes = new HashSet<CrushingRecipe>();
 
@@ -50,6 +37,9 @@ public class CrushingManager {
 
     public void initializeRecipes() {
         /* NORMAL RECIPES */
+        registerRecipe(new ItemStack(Block.stone), new ItemStack(Block.cobblestone));
+        registerRecipe(new ItemStack(Block.cobblestone), new ItemStack(Block.gravel));
+        registerRecipe(new ItemStack(Block.gravel), new ItemStack(Block.sand));
 
         /* ORE DICTIONARY HANDLING */
         for (OreWrapper ore : OreHandler.INSTANCE.getRegisteredOres()) {

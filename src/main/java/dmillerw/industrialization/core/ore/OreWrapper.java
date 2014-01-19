@@ -1,6 +1,7 @@
 package dmillerw.industrialization.core.ore;
 
-import dmillerw.industrialization.item.ItemGrinding;
+import dmillerw.industrialization.Industrialization;
+import dmillerw.industrialization.item.ItemHandler;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class OreWrapper {
     }
 
     public void generateGrinding() {
-        this.grinding = ItemGrinding.getGrinding(oreTag);
+        this.grinding = new ItemStack(ItemHandler.itemGrinding, 1, Industrialization.instance.grindingMapper.getID("grinding_" + this.oreTag, true));
     }
 
     public void setDust(ItemStack dust) {

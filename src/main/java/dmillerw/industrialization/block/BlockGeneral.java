@@ -1,6 +1,8 @@
 package dmillerw.industrialization.block;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import dmillerw.industrialization.core.TabIndustrialization;
+import dmillerw.industrialization.network.packet.PacketFX;
 import dmillerw.industrialization.recipe.CrushingManager;
 import dmillerw.industrialization.recipe.CrushingRecipe;
 import dmillerw.industrialization.util.UtilStack;
@@ -38,9 +40,12 @@ public class BlockGeneral extends Block {
                     if (below != null) {
                         CrushingRecipe result = CrushingManager.INSTANCE.getRecipeFor(new ItemStack(below, 1, belowMeta));
 
+                        System.out.println(result == null);
+
                         if (result != null) {
                             UtilStack.dropStack(world, x, y - 1, z, result.getOutput());
-                            // TODO Particles
+                            PacketFX packet = new PacketFX(x, y - 1, z, new ItemStack(below, 1, belowMeta));
+                            PacketDispatcher.sendPacketToAllAround(x, y - 1, z, PacketFX.MAX_PARTICLE_RANGE, world.provider.dimensionId, packet.toVanilla());
                             world.setBlockToAir(x, y - 1, z);
                         }
                     }

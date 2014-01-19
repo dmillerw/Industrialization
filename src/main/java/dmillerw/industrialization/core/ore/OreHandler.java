@@ -55,6 +55,12 @@ public class OreHandler {
         }
     }
 
+    public void fillGrindings() {
+        for (OreWrapper ore : getRegisteredOres()) {
+            ore.generateGrinding();
+        }
+    }
+
     @ForgeSubscribe
     public void oreDictionaryEvent(OreDictionary.OreRegisterEvent event) {
         handleOre(event.Name, event.Ore);
@@ -66,7 +72,11 @@ public class OreHandler {
             if (!blacklisted(baseTag)) {
                 OreWrapper ore = getOre(baseTag);
                 ore.addBlock(oreStack);
-                ore.generateGrinding();
+                if (ore.getGrinding() == null) {
+                    ore.generateGrinding();
+                    System.out.println(baseTag);
+                    System.out.println(baseTag + " dust is null? " + ore.getGrinding() == null);
+                }
                 replace(ore);
             }
         } else if (oreTag.startsWith("dust") && !(oreTag.contains("Tiny"))) {

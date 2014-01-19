@@ -11,11 +11,14 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
 import dmillerw.industrialization.core.handler.GuiHandler;
+import dmillerw.industrialization.core.handler.ItemMapper;
 import dmillerw.industrialization.core.ore.OreHandler;
 import dmillerw.industrialization.core.ore.OreWrapper;
+import dmillerw.industrialization.core.proxy.ServerPacketProxy;
 import dmillerw.industrialization.core.proxy.ServerProxy;
 import dmillerw.industrialization.item.ItemHandler;
 import dmillerw.industrialization.lib.ModInfo;
+import dmillerw.industrialization.network.PacketHandler;
 import dmillerw.industrialization.recipe.CrushingManager;
 import dmillerw.industrialization.util.UtilString;
 import net.minecraftforge.common.Configuration;
@@ -24,7 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 import java.io.File;
 
 @Mod(modid=ModInfo.ID, name=ModInfo.NAME, version= ModInfo.VERSION)
-@NetworkMod(channels = {ModInfo.ID})
+@NetworkMod(channels = {ModInfo.CHANNEL}, packetHandler = PacketHandler.class)
 public class Industrialization {
 
     @Mod.Instance(ModInfo.ID)
@@ -33,11 +36,19 @@ public class Industrialization {
     @SidedProxy(serverSide = ModInfo.SERVER_PROXY, clientSide = ModInfo.CLIENT_PROXY)
     public static ServerProxy proxy;
 
+    @SidedProxy(serverSide = ModInfo.SERVER_PACKET_PROXY, clientSide = ModInfo.CLIENT_PACKET_PROXY)
+    public static ServerPacketProxy packetProxy;
+
+    public File configDirectory;
+
     public Configuration config;
+
+    public ItemMapper grindingMapper;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        this.config = new Configuration(new File(event.getModConfigurationDirectory(), ModInfo.NAME));
+        this.configDirectory = new File(event.getModConfigurationDirectory(), "Industrialization");
+        this.config = new Configuration(new File(configDirectory, "Industrialization"));
 
         this.config.load();
 
@@ -48,6 +59,8 @@ public class Industrialization {
         if (this.config.hasChanged()) {
             this.config.save();
         }
+
+        this.grindingMapper = new ItemMapper(new File(configDirectory, "GrindingMapping.properties"));
 
         OreHandler.INSTANCE.addVanillaBlocks();
 
@@ -67,6 +80,9 @@ public class Industrialization {
 
         // It's assumed that all ore dictionary registrations have been completed by the time we hit post-init
         OreHandler.INSTANCE.clean();
+        OreHandler.INSTANCE.fillGrindings();
+
+        this.grindingMapper.save();
 
         // Don't know what the rules are on localization, but I don't think handling some here is a bad thing
         // Correct me if I'm wrong though
