@@ -2,11 +2,15 @@ package dmillerw.industrialization;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
+import dmillerw.industrialization.core.handler.GuiHandler;
 import dmillerw.industrialization.core.ore.OreHandler;
 import dmillerw.industrialization.core.ore.OreWrapper;
 import dmillerw.industrialization.core.proxy.ServerProxy;
@@ -20,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import java.io.File;
 
 @Mod(modid=ModInfo.ID, name=ModInfo.NAME, version= ModInfo.VERSION)
+@NetworkMod(channels = {ModInfo.ID})
 public class Industrialization {
 
     @Mod.Instance(ModInfo.ID)
@@ -49,6 +54,11 @@ public class Industrialization {
         MinecraftForge.EVENT_BUS.register(OreHandler.INSTANCE);
 
         proxy.registerRenders();
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
     }
 
     @Mod.EventHandler

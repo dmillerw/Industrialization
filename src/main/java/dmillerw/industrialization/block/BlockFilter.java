@@ -1,9 +1,9 @@
 package dmillerw.industrialization.block;
 
+import dmillerw.industrialization.Industrialization;
 import dmillerw.industrialization.block.tile.TileCore;
-import dmillerw.industrialization.block.tile.TileTable;
-import dmillerw.industrialization.client.render.block.RenderBlockTable;
-import dmillerw.industrialization.client.render.block.SimpleBlockRenderer;
+import dmillerw.industrialization.block.tile.TileFilter;
+import dmillerw.industrialization.core.handler.GuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +14,10 @@ import net.minecraft.world.World;
 /**
  * Created by Dylan Miller on 1/1/14
  */
-public class BlockTable extends BlockCore {
+public class BlockFilter extends BlockCore {
 
-    public BlockTable(int id) {
-        super(id, Material.rock);
+    public BlockFilter(int id) {
+        super(id, Material.iron);
 
         setHardness(2F);
         setResistance(2F);
@@ -28,27 +28,18 @@ public class BlockTable extends BlockCore {
         if (!world.isRemote) {
             TileEntity tile = world.getBlockTileEntity(x, y, z);
 
-            if (tile != null && tile instanceof TileCore) {
-                if (((TileCore)tile).onBlockActivated(player)) {
-                    world.markBlockForUpdate(x, y, z);
-                    return true;
-                } else {
-                    return false;
-                }
+            if (tile != null && tile instanceof TileFilter) {
+                player.openGui(Industrialization.instance, GuiHandler.GUI_FILTER, world, x, y, z);
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     @Override
     public Icon getIcon(int side, int meta) {
-        return Block.stone.getIcon(0, 0);
-    }
-
-    @Override
-    public Class<? extends SimpleBlockRenderer> getRenderer() {
-        return RenderBlockTable.class;
+        return Block.fenceIron.getIcon(0, 0); // Temp?Ti
     }
 
     @Override
@@ -63,7 +54,7 @@ public class BlockTable extends BlockCore {
 
     @Override
     public TileCore getTile(int meta) {
-        return new TileTable();
+        return new TileFilter();
     }
 
 }

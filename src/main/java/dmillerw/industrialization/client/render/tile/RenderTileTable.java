@@ -16,8 +16,8 @@ public class RenderTileTable extends TileEntitySpecialRenderer {
 
         GL11.glTranslated(x + 0.5F, y + 1F, z + 0.5F);
 
-        if (tile.contents != null) {
-            UtilRender.renderItem(tile.contents, true);
+        if (tile.contents.getStackInSlot(0) != null) {
+            UtilRender.renderItem(tile.contents.getStackInSlot(0), true);
         }
 
         GL11.glPopMatrix();

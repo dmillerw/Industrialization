@@ -83,7 +83,7 @@ public class OreHandler {
     }
 
     private boolean blacklisted(String oreTag) {
-        return (oreTag.equalsIgnoreCase("coal") || oreTag.equalsIgnoreCase("certusquartz"));
+        return (oreTag.equalsIgnoreCase("coal") || oreTag.equalsIgnoreCase("certusquartz") || oreTag.equalsIgnoreCase("nickel"));
     }
 
 }
