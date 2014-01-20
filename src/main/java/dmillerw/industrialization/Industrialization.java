@@ -1,5 +1,6 @@
 package dmillerw.industrialization;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -13,6 +14,7 @@ import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
 import dmillerw.industrialization.core.handler.GuiHandler;
 import dmillerw.industrialization.core.handler.ItemMapper;
+import dmillerw.industrialization.core.helper.CoreLogger;
 import dmillerw.industrialization.core.ore.OreHandler;
 import dmillerw.industrialization.core.ore.OreWrapper;
 import dmillerw.industrialization.core.proxy.ServerPacketProxy;
@@ -61,6 +63,11 @@ public class Industrialization {
         ItemHandler.initialize(new IDAllocator(this.config, 15000));
 
         OreHandler.preferredMod = config.get("ore", "preferredModID", "", "Setting this field will make Industrialization try it's best to make grindings produce dusts from the defined mod.\nExample mod IDs: IC2, ThermalExpansion, AppliedEnergistsics").getString();
+        if (Loader.isModLoaded(OreHandler.preferredMod)) {
+            CoreLogger.info("Preferred mod detected and set to " + OreHandler.preferredMod);
+        } else {
+            CoreLogger.warn("Preferred mod set to " + OreHandler.preferredMod + " but it wasn't found");
+        }
 
         if (this.config.hasChanged()) {
             this.config.save();
