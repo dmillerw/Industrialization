@@ -48,8 +48,6 @@ public class Industrialization {
     @SidedProxy(serverSide = ModInfo.SERVER_PACKET_PROXY, clientSide = ModInfo.CLIENT_PACKET_PROXY)
     public static ServerPacketProxy packetProxy;
 
-    public static boolean logOreDictionary = false;
-
     public VersionHandler versionHandler = new VersionHandler("https://raw.github.com/dmillerw/Industrialization/master/build.properties");
 
     public File configDirectory;
@@ -78,7 +76,9 @@ public class Industrialization {
             }
         }
 
-        logOreDictionary = config.get("debug", "logOreDictionaryEntries", false, "If enabled, will write all ore dictionary entries + the mod that added them to 'oreEntries.txt' in the Industrialization config folder").getBoolean(false);
+        OreHandler.ic2Support = config.get("ore", "ic2Support", true, "If enabled, grindings will also work in an IC2 Ore Washing Plant").getBoolean(true);
+
+        OreHandler.logOreDictionary = config.get("debug", "logOreDictionaryEntries", false, "If enabled, will write all ore dictionary entries + the mod that added them to 'oreEntries.txt' in the Industrialization config folder").getBoolean(false);
 
         this.versionHandler.runVersionCheck();
 
@@ -129,9 +129,7 @@ public class Industrialization {
             LanguageRegistry.addName(ore.getGrinding(), UtilString.insertSpacing(ore.oreTag) + " " + LanguageRegistry.instance().getStringLocalization("grinding.word"));
         }
 
-        if (logOreDictionary) {
-            OreHandler.writeEntriesToFile();
-        }
+        OreHandler.writeEntriesToFile();
     }
 
 }

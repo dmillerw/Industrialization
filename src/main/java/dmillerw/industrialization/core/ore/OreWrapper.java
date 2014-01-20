@@ -1,8 +1,10 @@
 package dmillerw.industrialization.core.ore;
 
+import cpw.mods.fml.common.Loader;
 import dmillerw.industrialization.Industrialization;
 import dmillerw.industrialization.item.ItemHandler;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,10 @@ public class OreWrapper {
 
     public void generateGrinding() {
         this.grinding = new ItemStack(ItemHandler.itemGrinding, 1, Industrialization.instance.grindingMapper.getID("grinding_" + this.oreTag, true));
+        OreDictionary.registerOre("grinding" + oreTag, this.grinding);
+        if (OreHandler.ic2Support && Loader.isModLoaded("IC2")) {
+            OreDictionary.registerOre("crushed" + oreTag, this.grinding); // IC2 support
+        }
     }
 
     public void setDust(ItemStack dust) {

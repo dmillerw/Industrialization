@@ -21,7 +21,16 @@ public class OreHandler {
 
     public static Map<String, Set<String>> oreEntries = new HashMap<String, Set<String>>();
 
+    public static String preferredMod;
+
+    public static boolean ic2Support = true;
+    public static boolean logOreDictionary = false;
+
     public static void writeEntriesToFile() {
+        if (!logOreDictionary) {
+            return;
+        }
+
         File out = new File(Industrialization.instance.configDirectory, "oreEntries.txt");
 
         if (out.exists()) {
@@ -48,8 +57,6 @@ public class OreHandler {
             CoreLogger.warn("Failed to write ore entries to file! Reason: " + ex.toString());
         }
     }
-
-    public static String preferredMod;
 
     public static final OreHandler INSTANCE = new OreHandler();
 
@@ -104,7 +111,7 @@ public class OreHandler {
     }
 
     private void handleOre(String oreTag, ItemStack oreStack) {
-        if (Industrialization.logOreDictionary) {
+        if (logOreDictionary) {
             String owner = ModHandler.INSTANCE.getOwner(oreStack);
 
             if (!oreEntries.containsKey(owner)) {
