@@ -20,7 +20,7 @@ public class ItemBlockGeneral extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return BlockGeneral.NAMES[stack.getItemDamage()].toLowerCase().replace(" ", "_");
+        return super.getUnlocalizedName(stack) + "." + BlockGeneral.NAMES[stack.getItemDamage()].toLowerCase().replace(" ", "_");
     }
 
 

@@ -14,6 +14,7 @@ import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
 import dmillerw.industrialization.core.handler.GuiHandler;
 import dmillerw.industrialization.core.handler.ItemMapper;
+import dmillerw.industrialization.core.handler.LocalizationHandler;
 import dmillerw.industrialization.core.handler.version.VersionHandler;
 import dmillerw.industrialization.core.helper.CoreLogger;
 import dmillerw.industrialization.core.ore.OreHandler;
@@ -83,6 +84,9 @@ public class Industrialization {
 
         this.grindingMapper = new ItemMapper(new File(configDirectory, "GrindingMapping.properties"));
 
+        LocalizationHandler.initializeLocalization();
+        LocalizationHandler.initializeUserLocalization(new File(configDirectory, "lang"));
+
         OreHandler.INSTANCE.addVanillaBlocks();
 
         MinecraftForge.EVENT_BUS.register(OreHandler.INSTANCE);
@@ -115,7 +119,7 @@ public class Industrialization {
         // Don't know what the rules are on localization, but I don't think handling some here is a bad thing
         // Correct me if I'm wrong though
         for (OreWrapper ore : OreHandler.INSTANCE.getRegisteredOres()) {
-            LanguageRegistry.addName(ore.getGrinding(), UtilString.insertSpacing(ore.oreTag) + " Grinding");
+            LanguageRegistry.addName(ore.getGrinding(), UtilString.insertSpacing(ore.oreTag) + " " + LanguageRegistry.instance().getStringLocalization("grinding.word"));
         }
     }
 
