@@ -48,7 +48,6 @@ public class TileFilter extends TileCore {
                                     processingQueue.push(UtilStack.resize(item.getEntityItem(), 1));
                                 }
                                 item.setDead();
-                                currentProcessingTime = processingTime;
                             }
                         }
                     }
