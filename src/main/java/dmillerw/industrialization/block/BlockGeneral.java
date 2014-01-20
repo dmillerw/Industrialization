@@ -2,12 +2,14 @@ package dmillerw.industrialization.block;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import dmillerw.industrialization.core.TabIndustrialization;
+import dmillerw.industrialization.lib.ModInfo;
 import dmillerw.industrialization.network.packet.PacketFX;
 import dmillerw.industrialization.recipe.CrushingManager;
 import dmillerw.industrialization.recipe.CrushingRecipe;
 import dmillerw.industrialization.util.UtilStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityPiston;
 import net.minecraft.util.Icon;
@@ -20,6 +22,8 @@ import net.minecraftforge.common.ForgeDirection;
 public class BlockGeneral extends Block {
 
     public static final String[] NAMES = new String[] {"Reinforced Iron"};
+
+    public Icon[] icons;
 
     public BlockGeneral(int id) {
         super(id, Material.iron);
@@ -83,7 +87,14 @@ public class BlockGeneral extends Block {
 
     @Override
     public Icon getIcon(int side, int meta) {
-        return Block.blockIron.getIcon(0, 0); // Temp
+        return icons[meta];
+    }
+
+    @Override
+    public void registerIcons(IconRegister register) {
+        this.icons = new Icon[1];
+
+        this.icons[0] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "reinforced_iron");
     }
 
 }
