@@ -14,6 +14,7 @@ import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
 import dmillerw.industrialization.core.handler.GuiHandler;
 import dmillerw.industrialization.core.handler.ItemMapper;
+import dmillerw.industrialization.core.handler.version.VersionHandler;
 import dmillerw.industrialization.core.helper.CoreLogger;
 import dmillerw.industrialization.core.ore.OreHandler;
 import dmillerw.industrialization.core.ore.OreWrapper;
@@ -45,6 +46,8 @@ public class Industrialization {
     @SidedProxy(serverSide = ModInfo.SERVER_PACKET_PROXY, clientSide = ModInfo.CLIENT_PACKET_PROXY)
     public static ServerPacketProxy packetProxy;
 
+    public VersionHandler versionHandler = new VersionHandler("https://raw.github.com/dmillerw/Industrialization/master/version.txt"); // Temp
+
     public File configDirectory;
 
     public Configuration config;
@@ -68,8 +71,16 @@ public class Industrialization {
                 CoreLogger.info("Preferred mod detected and set to " + OreHandler.preferredMod);
             } else {
                 CoreLogger.warn("Preferred mod set to " + OreHandler.preferredMod + " but it wasn't found");
+
             }
         }
+
+
+        if (config.get("version", "suppressNotifications", false, "Should non-critical update notifications be suppressed").getBoolean(false)) {
+            this.versionHandler.suppress();
+        }
+
+        this.versionHandler.runVersionCheck();
 
         if (this.config.hasChanged()) {
             this.config.save();

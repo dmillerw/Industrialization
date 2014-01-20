@@ -15,7 +15,7 @@ public class ModInfo {
     public static final String REVISION_VERSION = "@REVIS@";
     public static final String BUILD = "@BUILD@";
 
-    public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION + "." + BUILD;
+    public static final String VERSION = MAJOR_VERSION + "." + MINOR_VERSION + "." + REVISION_VERSION;
 
     public static final String BASE_PACKAGE = "dmillerw." + ID;
 
