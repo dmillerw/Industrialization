@@ -15,6 +15,7 @@ public class OreWrapper {
     public final String oreTag;
 
     private List<ItemStack> oreBlocks = new ArrayList<ItemStack>();
+
     private ItemStack grinding;
     private ItemStack dust;
 
@@ -31,6 +32,7 @@ public class OreWrapper {
     }
 
     public void setDust(ItemStack dust) {
+        System.out.println("Setting " + oreTag + " dust to " + dust.getDisplayName());
         this.dust = dust;
     }
 

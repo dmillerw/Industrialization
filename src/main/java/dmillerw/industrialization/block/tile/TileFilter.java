@@ -40,14 +40,16 @@ public class TileFilter extends TileCore {
 
                 if (nearbyItems != null && nearbyItems.size() > 0) {
                     for (EntityItem item : nearbyItems) {
-                        FilterRecipe recipe = FilterManager.INSTANCE.getRecipeFor(item.getEntityItem());
+                        if (!item.isDead) {
+                            FilterRecipe recipe = FilterManager.INSTANCE.getRecipeFor(item.getEntityItem());
 
-                        if (recipe != null) {
-                            for (int i=0; i<item.getEntityItem().stackSize; i++) {
-                                processingQueue.push(UtilStack.resize(item.getEntityItem(), 1));
+                            if (recipe != null) {
+                                for (int i=0; i<item.getEntityItem().stackSize; i++) {
+                                    processingQueue.push(UtilStack.resize(item.getEntityItem(), 1));
+                                }
+                                item.setDead();
+                                currentProcessingTime = processingTime;
                             }
-                            item.setDead();
-                            currentProcessingTime = processingTime;
                         }
                     }
                 }

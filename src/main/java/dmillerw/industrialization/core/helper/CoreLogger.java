@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class CoreLogger {
 
 	public static Logger logger;
-	
+
 	static {
 		logger = Logger.getLogger(ModInfo.NAME);
 		logger.setParent(FMLLog.getLogger());
@@ -21,5 +21,9 @@ public class CoreLogger {
 	public static void warn(String msg) {
 		logger.warning(msg);
 	}
-	
+
+    public static void fine(String msg) {
+        logger.fine(msg);
+    }
+
 }

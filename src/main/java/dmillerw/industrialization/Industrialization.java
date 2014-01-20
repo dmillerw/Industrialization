@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import dmillerw.industrialization.block.BlockHandler;
 import dmillerw.industrialization.core.IDAllocator;
@@ -22,8 +23,10 @@ import dmillerw.industrialization.network.PacketHandler;
 import dmillerw.industrialization.recipe.CrushingManager;
 import dmillerw.industrialization.recipe.FilterManager;
 import dmillerw.industrialization.util.UtilString;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.io.File;
 
@@ -57,6 +60,8 @@ public class Industrialization {
 
         ItemHandler.initialize(new IDAllocator(this.config, 15000));
 
+        OreHandler.preferredMod = config.get("ore", "preferredModID", "", "Setting this field will make Industrialization try it's best to make grindings produce dusts from the defined mod.\nExample mod IDs: IC2, ThermalExpansion, AppliedEnergistsics").getString();
+
         if (this.config.hasChanged()) {
             this.config.save();
         }
@@ -73,6 +78,12 @@ public class Industrialization {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+
+        //TODO REMOVE THESE TEMPORARY RECIPES
+        //FILTER
+        GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockFilter, "SIS", "III", "SIS", 'S', "stone", 'I', Block.fenceIron));
+        //REINFORCED IRON
+        GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockGeneral, "SSS", "SIS", "SSS", 'S', "stone", 'I', Block.blockIron));
     }
 
     @Mod.EventHandler

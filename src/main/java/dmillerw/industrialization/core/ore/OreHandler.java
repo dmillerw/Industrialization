@@ -1,5 +1,8 @@
 package dmillerw.industrialization.core.ore;
 
+import cpw.mods.fml.common.Loader;
+import dmillerw.industrialization.core.handler.ModHandler;
+import dmillerw.industrialization.core.helper.CoreLogger;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.oredict.OreDictionary;
@@ -13,6 +16,8 @@ import java.util.Map;
  * Created by Dylan Miller on 1/2/14
  */
 public class OreHandler {
+
+    public static String preferredMod;
 
     public static final OreHandler INSTANCE = new OreHandler();
 
@@ -82,9 +87,22 @@ public class OreHandler {
             if (!blacklisted(oreTag)) {
                 OreWrapper ore = getOre(baseTag);
 
-                if (ore.getDust() == null) {
-                    ore.setDust(oreStack);
-                    replace(ore);
+                String owner = ModHandler.INSTANCE.getOwner(oreStack);
+
+                if (preferredMod != null && !preferredMod.isEmpty() && Loader.isModLoaded(preferredMod)) {
+                    if (owner != null && owner.equalsIgnoreCase(preferredMod)) {
+                        if (ore.getDust() == null) {
+                            CoreLogger.fine("Preferred mod found. Setting dust form of " + baseTag + " to " + preferredMod + "'s " + oreStack.getDisplayName());
+                            ore.setDust(oreStack);
+                            replace(ore);
+                        }
+                    }
+                } else {
+                    if (ore.getDust() == null) {
+                        CoreLogger.fine("Preferred mod either not set or not found. Setting dust form of " + baseTag + " to " + (owner != null ? owner + "'s " : "") + oreStack.getDisplayName());
+                        ore.setDust(oreStack);
+                        replace(ore);
+                    }
                 }
             }
         }
