@@ -32,7 +32,6 @@ public class OreWrapper {
     }
 
     public void setDust(ItemStack dust) {
-        System.out.println("Setting " + oreTag + " dust to " + dust.getDisplayName());
         this.dust = dust;
     }
 

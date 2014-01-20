@@ -63,10 +63,12 @@ public class Industrialization {
         ItemHandler.initialize(new IDAllocator(this.config, 15000));
 
         OreHandler.preferredMod = config.get("ore", "preferredModID", "", "Setting this field will make Industrialization try it's best to make grindings produce dusts from the defined mod.\nExample mod IDs: IC2, ThermalExpansion, AppliedEnergistsics").getString();
-        if (Loader.isModLoaded(OreHandler.preferredMod)) {
-            CoreLogger.info("Preferred mod detected and set to " + OreHandler.preferredMod);
-        } else {
-            CoreLogger.warn("Preferred mod set to " + OreHandler.preferredMod + " but it wasn't found");
+        if (!OreHandler.preferredMod.isEmpty()) {
+            if (Loader.isModLoaded(OreHandler.preferredMod)) {
+                CoreLogger.info("Preferred mod detected and set to " + OreHandler.preferredMod);
+            } else {
+                CoreLogger.warn("Preferred mod set to " + OreHandler.preferredMod + " but it wasn't found");
+            }
         }
 
         if (this.config.hasChanged()) {
