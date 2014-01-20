@@ -4,9 +4,8 @@ import dmillerw.industrialization.core.helper.CoreLogger;
 import dmillerw.industrialization.lib.ModInfo;
 import net.minecraft.crash.CallableMinecraftVersion;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Properties;
 
 /**
  * Created by Dylan Miller on 1/19/14
@@ -52,48 +51,22 @@ public class VersionHandler {
 
     private final String checkURL;
 
+    /* Current data */
     private String activeMCVersion;
     private String activeModVersion = ModInfo.VERSION;
-
-    private boolean shouldSuppress = false;
-    private boolean newVersion = false;
-    private boolean checkComplete = false;
 
     /* Version check data */
     private String mcVersion;
     private String modVersion;
-    private String description;
-
-    private boolean critical;
 
     public VersionHandler(String checkURL) {
         this.checkURL = checkURL;
         this.activeMCVersion = new CallableMinecraftVersion(null).minecraftVersion();
     }
 
-    public void suppress() {
-        this.shouldSuppress = true;
-    }
-
     public void runVersionCheck() {
         ThreadVersionCheck thread = new ThreadVersionCheck();
         thread.start();
-    }
-
-    public String getModVersion() {
-        return modVersion;
-    }
-
-    public String getMcVersion() {
-        return mcVersion;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isCritical() {
-        return critical;
     }
 
     private class ThreadVersionCheck extends Thread {
@@ -103,23 +76,22 @@ public class VersionHandler {
         }
 
         public void run() {
+            if (VersionHandler.this.activeModVersion.contains("@")) {
+                CoreLogger.info("Development version of Industrialization found. Skipping version check.");
+                return;
+            }
+
             try {
                 URL versionFile = new URL(VersionHandler.this.checkURL);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(versionFile.openStream()));
-                VersionHandler.this.modVersion = reader.readLine();
-                VersionHandler.this.mcVersion = reader.readLine();
-                VersionHandler.this.description = reader.readLine();
-                VersionHandler.this.critical = Boolean.parseBoolean(reader.readLine());
-                reader.close();
+                Properties properties = new Properties();
+                properties.load(versionFile.openStream());
+
+                VersionHandler.this.mcVersion = properties.getProperty("minecraft_version");
+                VersionHandler.this.modVersion = properties.getProperty("mod_version");
 
                 if (VersionHandler.beforeTargetVersion(VersionHandler.this.activeModVersion, VersionHandler.this.modVersion)) {
                     CoreLogger.info("An newer version of " + ModInfo.NAME + " is available: " + VersionHandler.this.modVersion);
-                    VersionHandler.this.newVersion = true;
 
-                    if (VersionHandler.this.critical) {
-                        CoreLogger.info("This is a critical update and should be downloaded as soon as possible. It will not be possible to suppress this notification");
-                        VersionHandler.this.shouldSuppress = false;
-                    }
                     if (VersionHandler.beforeTargetVersion(VersionHandler.this.activeMCVersion, VersionHandler.this.mcVersion)) {
                         CoreLogger.info("This update is for Minecraft " + VersionHandler.this.mcVersion + ".");
                     }
@@ -127,7 +99,6 @@ public class VersionHandler {
             } catch (Exception e) {
                 CoreLogger.warn("Failed to run version check: " + e.getMessage());
             }
-            VersionHandler.this.checkComplete = true;
         }
     }
 

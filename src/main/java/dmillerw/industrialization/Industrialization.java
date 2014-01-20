@@ -46,7 +46,7 @@ public class Industrialization {
     @SidedProxy(serverSide = ModInfo.SERVER_PACKET_PROXY, clientSide = ModInfo.CLIENT_PACKET_PROXY)
     public static ServerPacketProxy packetProxy;
 
-    public VersionHandler versionHandler = new VersionHandler("https://raw.github.com/dmillerw/Industrialization/master/version.txt"); // Temp
+    public VersionHandler versionHandler = new VersionHandler("https://raw.github.com/dmillerw/Industrialization/master/build.properties");
 
     public File configDirectory;
 
@@ -73,10 +73,6 @@ public class Industrialization {
                 CoreLogger.warn("Preferred mod set to " + OreHandler.preferredMod + " but it wasn't found");
 
             }
-        }
-
-        if (config.get("version", "suppressNotifications", false, "Should non-critical update notifications be suppressed").getBoolean(false)) {
-            this.versionHandler.suppress();
         }
 
         this.versionHandler.runVersionCheck();
