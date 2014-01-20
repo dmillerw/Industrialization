@@ -9,8 +9,10 @@ import dmillerw.industrialization.util.UtilStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityPiston;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Created by Dylan Miller on 1/19/14
@@ -33,20 +35,45 @@ public class BlockGeneral extends Block {
             int meta = world.getBlockMetadata(x, y, z);
 
             if (meta == 0) {
-                if (world.getBlockId(x, y + 1, z) == Block.pistonMoving.blockID) {
-                    Block below = Block.blocksList[world.getBlockId(x, y - 1, z)];
-                    int belowMeta = world.getBlockMetadata(x, y - 1, z);
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    // Coordinates of piston head
+                    int nx = x + side.offsetX;
+                    int ny = y + side.offsetY;
+                    int nz = z + side.offsetZ;
 
-                    if (below != null) {
-                        CrushingRecipe result = CrushingManager.INSTANCE.getRecipeFor(new ItemStack(below, 1, belowMeta));
+                    if (world.getBlockId(nx, ny, nz) == Block.pistonMoving.blockID) {
+                        TileEntityPiston piston = (TileEntityPiston) world.getBlockTileEntity(nx, ny, nz);
 
-                        System.out.println(result == null);
+                        // If there is an actively extending piston on that side, and it's pushing towards the block
+                        if (ForgeDirection.getOrientation(piston.getPistonOrientation()) == side.getOpposite()) {
+                            // Coordinates of block being smashed
+                            int opX = x + side.getOpposite().offsetX;
+                            int opY = y + side.getOpposite().offsetY;
+                            int opZ = z + side.getOpposite().offsetZ;
 
-                        if (result != null) {
-                            UtilStack.dropStack(world, x, y - 1, z, result.getOutput());
-                            PacketFX packet = new PacketFX(x, y - 1, z, new ItemStack(below, 1, belowMeta));
-                            PacketDispatcher.sendPacketToAllAround(x, y - 1, z, PacketFX.MAX_PARTICLE_RANGE, world.provider.dimensionId, packet.toVanilla());
-                            world.setBlockToAir(x, y - 1, z);
+                            // Data of block being smashed
+                            int opID = world.getBlockId(opX, opY, opZ);
+                            int opMeta = world.getBlockMetadata(opX, opY, opZ);
+
+                            // Coordinates of block being pressed against
+                            int aX = opX + side.getOpposite().offsetX;
+                            int aY = opY + side.getOpposite().offsetY;
+                            int aZ = opZ + side.getOpposite().offsetZ;
+
+                            // Data of block being pressed against
+                            int aID = world.getBlockId(aX, aY, aZ);
+                            int aMeta = world.getBlockMetadata(aX, aY, aZ);
+
+                            if (!world.isAirBlock(aX, aY, aZ)) {
+                                CrushingRecipe result = CrushingManager.INSTANCE.getRecipeFor(new ItemStack(opID, 1, opMeta));
+
+                                if (result != null) {
+                                    UtilStack.dropStack(world, opX, opY, opZ, result.getOutput());
+                                    PacketFX packet = new PacketFX(opX, opY, opZ, new ItemStack(opID, 1, opMeta));
+                                    PacketDispatcher.sendPacketToAllAround(opX, opY, opZ, PacketFX.MAX_PARTICLE_RANGE, world.provider.dimensionId, packet.toVanilla());
+                                    world.setBlockToAir(opX, opY, opZ);
+                                }
+                            }
                         }
                     }
                 }
