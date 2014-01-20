@@ -48,6 +48,8 @@ public class Industrialization {
     @SidedProxy(serverSide = ModInfo.SERVER_PACKET_PROXY, clientSide = ModInfo.CLIENT_PACKET_PROXY)
     public static ServerPacketProxy packetProxy;
 
+    public static boolean logOreDictionary = false;
+
     public VersionHandler versionHandler = new VersionHandler("https://raw.github.com/dmillerw/Industrialization/master/build.properties");
 
     public File configDirectory;
@@ -73,9 +75,10 @@ public class Industrialization {
                 CoreLogger.info("Preferred mod detected and set to " + OreHandler.preferredMod);
             } else {
                 CoreLogger.warn("Preferred mod set to " + OreHandler.preferredMod + " but it wasn't found");
-
             }
         }
+
+        logOreDictionary = config.get("debug", "logOreDictionaryEntries", false, "If enabled, will write all ore dictionary entries + the mod that added them to 'oreEntries.txt' in the Industrialization config folder").getBoolean(false);
 
         this.versionHandler.runVersionCheck();
 
@@ -124,6 +127,10 @@ public class Industrialization {
         // Correct me if I'm wrong though
         for (OreWrapper ore : OreHandler.INSTANCE.getRegisteredOres()) {
             LanguageRegistry.addName(ore.getGrinding(), UtilString.insertSpacing(ore.oreTag) + " " + LanguageRegistry.instance().getStringLocalization("grinding.word"));
+        }
+
+        if (logOreDictionary) {
+            OreHandler.writeEntriesToFile();
         }
     }
 

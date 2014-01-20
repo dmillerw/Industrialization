@@ -1,21 +1,53 @@
 package dmillerw.industrialization.core.ore;
 
 import cpw.mods.fml.common.Loader;
+import dmillerw.industrialization.Industrialization;
 import dmillerw.industrialization.core.handler.ModHandler;
 import dmillerw.industrialization.core.helper.CoreLogger;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by Dylan Miller on 1/2/14
  */
 public class OreHandler {
+
+    public static Map<String, Set<String>> oreEntries = new HashMap<String, Set<String>>();
+
+    public static void writeEntriesToFile() {
+        File out = new File(Industrialization.instance.configDirectory, "oreEntries.txt");
+
+        if (out.exists()) {
+            out.delete();
+        }
+
+        try {
+            FileWriter fw = new FileWriter(new File(Industrialization.instance.configDirectory, "oreEntries.txt"));
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (Map.Entry<String, Set<String>> entry : oreEntries.entrySet()) {
+                bw.newLine();
+                bw.write(entry.getKey() + ":");
+                bw.newLine();
+                for (String str : new TreeSet<String>(entry.getValue())) {
+                    bw.write(" - " + str);
+                    bw.newLine();
+                }
+            }
+
+            bw.close();
+            fw.close();
+        } catch(IOException ex) {
+            CoreLogger.warn("Failed to write ore entries to file! Reason: " + ex.toString());
+        }
+    }
 
     public static String preferredMod;
 
@@ -72,6 +104,18 @@ public class OreHandler {
     }
 
     private void handleOre(String oreTag, ItemStack oreStack) {
+        if (Industrialization.logOreDictionary) {
+            String owner = ModHandler.INSTANCE.getOwner(oreStack);
+
+            if (!oreEntries.containsKey(owner)) {
+                oreEntries.put(owner, new HashSet<String>());
+            }
+
+            Set<String> tags = oreEntries.get(owner);
+            tags.add(oreTag);
+            oreEntries.put(owner, tags);
+        }
+
         if (oreTag.startsWith("ore")) {
             String baseTag = oreTag.substring("ore".length());
             if (!blacklisted(baseTag)) {
