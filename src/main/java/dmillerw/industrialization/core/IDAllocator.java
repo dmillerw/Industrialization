@@ -30,7 +30,7 @@ public class IDAllocator {
         return id;
     }
 
-    public int getNextBlockID() {
+    private int getNextBlockID() {
         int id = currentID;
 
         while (id > 255 && id < (Block.blocksList.length - 1)) {
@@ -44,7 +44,7 @@ public class IDAllocator {
         return id;
     }
 
-    public int getNextItemID() {
+    private int getNextItemID() {
         int id = currentID;
 
         while (id > 255 && id < (Item.itemsList.length - 1)) {

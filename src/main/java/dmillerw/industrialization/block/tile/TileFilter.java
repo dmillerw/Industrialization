@@ -30,15 +30,14 @@ public class TileFilter extends TileCore {
     private int currentProcessingTime = processingTime;
 
     private boolean waterFlowing = false;
-    private boolean firstLoad = true;
+
+    @Override
+    public void onFirstLoad() {
+        onNeighborBlockUpdate();
+    }
 
     @Override
     public void updateEntity() {
-        if (firstLoad) {
-            onNeighborBlockUpdate();
-            firstLoad = false;
-        }
-
         if (!worldObj.isRemote && waterFlowing) {
             // Handle insertion of new items
             if (worldObj.getTotalWorldTime() % 5 == 0) {

@@ -7,11 +7,16 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * Created by Dylan Miller on 1/1/14
  */
 public abstract class TileCore extends TileEntity {
+
+    public boolean firstLoad = false;
+
+    public int getSignalStrength(ForgeDirection side) { return 0; }
 
     public boolean onBlockActivated(EntityPlayer player) { return false; }
 
@@ -21,9 +26,19 @@ public abstract class TileCore extends TileEntity {
 
     public void onBlockBreak() {}
 
+    public void onFirstLoad() {}
+
     public abstract void writeCustomNBT(NBTTagCompound nbt);
 
     public abstract void readCustomNBT(NBTTagCompound nbt);
+
+    @Override
+    public void updateEntity() {
+        if (firstLoad) {
+            onFirstLoad();
+            firstLoad = false;
+        }
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
