@@ -50,7 +50,13 @@ public class ItemGrinding extends Item {
 
         if (!oreColorCache.containsKey(oreTag)) {
             List<Color> colors = new ArrayList<Color>();
-            Block ore = Block.blocksList[OreHandler.INSTANCE.getOre(oreTag).getOreBlocks()[0].itemID];
+            int oreID = OreHandler.INSTANCE.getOre(oreTag).getOreBlocks()[0].itemID;
+
+            if (oreID > 4095) {
+                return 0xFFFFFF; // FortuneOres... :|
+            }
+
+            Block ore = Block.blocksList[oreID];
 
             try {
                 BufferedImage oreImage = ImageIO.read(UtilIcon.getResource(UtilIcon.getLocation(ore)).getInputStream());
