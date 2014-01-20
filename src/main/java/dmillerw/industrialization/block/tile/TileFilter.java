@@ -30,9 +30,15 @@ public class TileFilter extends TileCore {
     private int currentProcessingTime = processingTime;
 
     private boolean waterFlowing = false;
+    private boolean firstLoad = true;
 
     @Override
     public void updateEntity() {
+        if (firstLoad) {
+            onNeighborBlockUpdate();
+            firstLoad = false;
+        }
+
         if (!worldObj.isRemote && waterFlowing) {
             // Handle insertion of new items
             if (worldObj.getTotalWorldTime() % 5 == 0) {
@@ -97,11 +103,6 @@ public class TileFilter extends TileCore {
     }
 
     @Override
-    public void onBlockAdded() {
-        onNeighborBlockUpdate();
-    }
-
-    @Override
     public void onBlockBreak() {
         for (ItemStack stack : processingQueue) {
             UtilStack.dropStack(this, stack);
@@ -111,8 +112,8 @@ public class TileFilter extends TileCore {
     @Override
     public void onNeighborBlockUpdate() {
         if (!waterFlowing) {
-            int idAbove = worldObj.getBlockId(xCoord, yCoord + 1, zCoord);
-            if (idAbove == Block.waterStill.blockID || idAbove == Block.waterMoving.blockID) {
+            // int idAbove = worldObj.getBlockId(xCoord, yCoord + 1, zCoord);
+            if (worldObj.getBlockMaterial(xCoord, yCoord + 1, zCoord) == Material.water) {
                 waterFlowing = true;
 
                 if (worldObj.isAirBlock(xCoord, yCoord - 1, zCoord)) {

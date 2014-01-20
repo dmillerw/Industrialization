@@ -75,7 +75,6 @@ public class Industrialization {
             }
         }
 
-
         if (config.get("version", "suppressNotifications", false, "Should non-critical update notifications be suppressed").getBoolean(false)) {
             this.versionHandler.suppress();
         }
