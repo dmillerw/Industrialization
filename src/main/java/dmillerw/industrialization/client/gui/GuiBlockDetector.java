@@ -25,6 +25,10 @@ public class GuiBlockDetector extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         String s = I18n.getString("gui.block_detector");
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+
+        String warn = "This block is still a WIP!";
+        this.fontRenderer.drawString(warn, this.xSize / 2 - this.fontRenderer.getStringWidth(warn) / 2, 55, 0xFF0000);
+
         this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 

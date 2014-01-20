@@ -2,6 +2,7 @@ package dmillerw.industrialization.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import dmillerw.industrialization.block.item.ItemBlockGeneral;
+import dmillerw.industrialization.block.item.ItemBlockRedstone;
 import dmillerw.industrialization.block.tile.TileBlockDetector;
 import dmillerw.industrialization.block.tile.TileFilter;
 import dmillerw.industrialization.core.IDAllocator;
@@ -35,7 +36,7 @@ public class BlockHandler {
         GameRegistry.registerTileEntity(TileFilter.class, "filter_tile");
 
         blockUtilityRedstone = new BlockUtilityRedstone(blockUtilityRedstoneID).setUnlocalizedName("utility_redstone");
-        GameRegistry.registerBlock(blockUtilityRedstone, "utility_redstone");
+        GameRegistry.registerBlock(blockUtilityRedstone, ItemBlockRedstone.class, "utility_redstone");
         GameRegistry.registerTileEntity(TileBlockDetector.class, "utility_redstone_block_detector_tile");
     }
 
