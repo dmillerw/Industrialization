@@ -28,6 +28,7 @@ import dmillerw.industrialization.recipe.CrushingManager;
 import dmillerw.industrialization.recipe.FilterManager;
 import dmillerw.industrialization.util.UtilString;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -100,7 +101,7 @@ public class Industrialization {
 
         //TODO REMOVE THESE TEMPORARY RECIPES
         //FILTER
-        GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockFilter, "SIS", "III", "SIS", 'S', "stone", 'I', Block.fenceIron));
+        GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockFilter, "PSP", "SSS", "PSP", 'S', Item.silk, 'P', "plankWood"));
         //REINFORCED IRON
         GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockGeneral, "SSS", "SIS", "SSS", 'S', "stone", 'I', Block.blockIron));
     }
