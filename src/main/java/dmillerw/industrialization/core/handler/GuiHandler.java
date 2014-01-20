@@ -1,9 +1,9 @@
 package dmillerw.industrialization.core.handler;
 
 import cpw.mods.fml.common.network.IGuiHandler;
-import dmillerw.industrialization.block.tile.TileFilter;
-import dmillerw.industrialization.client.gui.GuiFilter;
-import dmillerw.industrialization.inventory.ContainerFilter;
+import dmillerw.industrialization.block.tile.TileBlockDetector;
+import dmillerw.industrialization.client.gui.GuiBlockDetector;
+import dmillerw.industrialization.inventory.ContainerBlockDetector;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -12,12 +12,12 @@ import net.minecraft.world.World;
  */
 public class GuiHandler implements IGuiHandler {
 
-    public static final int GUI_FILTER = 0;
+    public static final int GUI_BLOCK_DETECTOR = 0;
 
     @Override
     public Object getServerGuiElement(int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
         switch(id) {
-            case GUI_FILTER: return new ContainerFilter(entityPlayer, (TileFilter) world.getBlockTileEntity(x, y, z));
+            case GUI_BLOCK_DETECTOR: return new ContainerBlockDetector(entityPlayer, (TileBlockDetector) world.getBlockTileEntity(x, y, z));
         }
 
         return null;
@@ -26,7 +26,7 @@ public class GuiHandler implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer entityPlayer, World world, int x, int y, int z) {
         switch(id) {
-            case GUI_FILTER: return new GuiFilter(entityPlayer, (TileFilter) world.getBlockTileEntity(x, y, z));
+            case GUI_BLOCK_DETECTOR: return new GuiBlockDetector(entityPlayer, (TileBlockDetector) world.getBlockTileEntity(x, y, z));
         }
 
         return null;

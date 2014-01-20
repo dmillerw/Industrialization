@@ -21,7 +21,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockGeneral extends Block {
 
-    public static final String[] NAMES = new String[] {"Reinforced Iron"};
+    public static final String[] NAMES = new String[] {"reinforced_iron"};
 
     public Icon[] icons;
 
