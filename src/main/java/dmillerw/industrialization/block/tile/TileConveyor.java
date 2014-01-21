@@ -16,6 +16,7 @@ public class TileConveyor extends TileCore {
 
     public ForgeDirection orientation = ForgeDirection.UNKNOWN;
 
+    public float progressStep = 0.0F;
     public float progress = 0.0F;
 
     public int storedID = 0;
@@ -39,19 +40,27 @@ public class TileConveyor extends TileCore {
 
     @Override
     public void updateEntity() {
-        if (redstoneState) {
-            return;
+        if (progressStep < 0.1F && !redstoneState) {
+            progressStep += 0.01F;
         }
 
         if (storedID > 0) {
+            if (progressStep > 0F && redstoneState) {
+                progressStep -= 0.01F;
+            }
+
             if (progress < 1.0F) {
-                progress += 0.1F;
+                progress += progressStep;
             } else if (progress > 1.0F) {
                 progress = 1.0F;
             }
         }
 
         if (!worldObj.isRemote) {
+            if (redstoneState) {
+                return;
+            }
+
             int mX = xCoord + orientation.offsetX;
             int mY = yCoord + 1;
             int mZ = zCoord + orientation.offsetZ;
