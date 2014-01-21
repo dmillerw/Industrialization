@@ -1,6 +1,6 @@
 package dmillerw.industrialization.block.item;
 
-import dmillerw.industrialization.block.BlockGeneral;
+import dmillerw.industrialization.block.BlockGeneralMetal;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -20,7 +20,7 @@ public class ItemBlockGeneral extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "." + BlockGeneral.NAMES[stack.getItemDamage()];
+        return super.getUnlocalizedName(stack) + "." + BlockGeneralMetal.NAMES[stack.getItemDamage()];
     }
 
 

@@ -45,10 +45,6 @@ public class TileBlockDetector extends TileCore {
     }
 
     private boolean blockDetected() {
-        if (target.getStackInSlot(0) == null) {
-            return false;
-        }
-
         ItemStack targetStack = target.getStackInSlot(0);
 
         int id = worldObj.getBlockId(xCoord + orientation.offsetX, yCoord + orientation.offsetY, zCoord + orientation.offsetZ);
@@ -56,7 +52,11 @@ public class TileBlockDetector extends TileCore {
 
         Block block = Block.blocksList[id];
 
-        if (block == null) {
+        if (block != null && targetStack == null) {
+            return true;
+        }
+
+        if (block == null || targetStack == null) {
             return false;
         }
 

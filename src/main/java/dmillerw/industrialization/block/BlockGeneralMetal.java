@@ -19,13 +19,13 @@ import net.minecraftforge.common.ForgeDirection;
 /**
  * Created by Dylan Miller on 1/19/14
  */
-public class BlockGeneral extends Block {
+public class BlockGeneralMetal extends Block {
 
-    public static final String[] NAMES = new String[] {"reinforced_iron"};
+    public static final String[] NAMES = new String[] {"reinforced_iron", "iron_boiler"};
 
     public Icon[] icons;
 
-    public BlockGeneral(int id) {
+    public BlockGeneralMetal(int id) {
         super(id, Material.iron);
 
         setCreativeTab(TabIndustrialization.TAB);

@@ -10,6 +10,22 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class UtilEntity {
 
+    public static ForgeDirection determine2DOrientation_Forge(World world, int x, int y, int z, EntityLivingBase entity) {
+        return ForgeDirection.getOrientation(determine2DOrientation_I(world, x, y, z, entity));
+    }
+
+    public static int determine2DOrientation_I(World world, int x, int y, int z, EntityLivingBase entity) {
+        int rotation = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        switch(rotation) {
+            case 0: return 2;
+            case 1: return 5;
+            case 2: return 3;
+            case 3: return 4;
+            default: return -1;
+        }
+    }
+
     public static ForgeDirection determine3DOrientation_Forge(World world, int x, int y, int z, EntityLivingBase entity) {
         return ForgeDirection.getOrientation(determine3DOrientation_I(world, x, y, z, entity));
     }

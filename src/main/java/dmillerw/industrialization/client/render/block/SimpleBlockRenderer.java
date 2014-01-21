@@ -32,7 +32,7 @@ public abstract class SimpleBlockRenderer implements ISimpleBlockRenderingHandle
 
     protected void renderDimensionsInInventory(RenderBlocks renderer, Block block, double x1, double y1, double z1, double x2, double y2, double z2, Icon textureOverride) {
         renderer.setRenderBounds(x1, y1, z1, x2, y2, z2);
-        UtilRender.renderAllSides(renderer, block, textureOverride);
+        UtilRender.renderAllSides(renderer, block, 0, textureOverride);
     }
 
     protected void renderDimensionsInWorld(RenderBlocks renderer, Block block, int x, int y, int z, double x1, double y1, double z1, double x2, double y2, double z2, Icon textureOverride) {
