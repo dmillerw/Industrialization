@@ -74,9 +74,9 @@ public class BlockConveyor extends BlockCore {
         } else if (side == 0) {
             return icons[2];
         } else if (side == 4 || side == 5) {
-            return icons[3];
-        } else {
             return icons[1];
+        } else {
+            return icons[3  ];
         }
     }
 
