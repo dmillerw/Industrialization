@@ -72,7 +72,7 @@ public class BlockGeneralMetal extends Block {
                                 CrushingRecipe result = CrushingManager.INSTANCE.getRecipeFor(new ItemStack(opID, 1, opMeta));
 
                                 if (result != null) {
-                                    UtilStack.dropStack(world, opX, opY, opZ, result.getOutput());
+                                    UtilStack.dropStack(world, opX, opY, opZ, result.getOutput(), false);
                                     PacketFX packet = new PacketFX(opX, opY, opZ, new ItemStack(opID, 1, opMeta));
                                     PacketDispatcher.sendPacketToAllAround(opX, opY, opZ, PacketFX.MAX_PARTICLE_RANGE, world.provider.dimensionId, packet.toVanilla());
                                     world.setBlockToAir(opX, opY, opZ);
