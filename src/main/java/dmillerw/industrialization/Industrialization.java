@@ -110,7 +110,7 @@ public class Industrialization {
 
         // Non-temp recipes
         // Block Detector
-        GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockUtilityRedstone, "SCS", "RBR", "SRS", 'S', "stone", 'C', Item.comparator, 'R', Item.redstone, 'B', Block.blockRedstone));
+        GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockUtility, "SCS", "RBR", "SRS", 'S', "stone", 'C', Item.comparator, 'R', Item.redstone, 'B', Block.blockRedstone));
         // Conveyor
         GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockConveyor, "III", "WBW", "III", 'I', Item.ingotIron, 'W', "plankWood", 'B', Block.fenceIron));
     }
