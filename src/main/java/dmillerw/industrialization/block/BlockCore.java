@@ -39,7 +39,7 @@ public abstract class BlockCore extends BlockContainer {
             TileEntity tile = world.getBlockTileEntity(x, y, z);
 
             if (tile != null && tile instanceof TileCore) {
-                ((TileCore)tile).onBlockAdded();
+                ((TileCore)tile).onBlockAdded(null);
             }
         }
     }

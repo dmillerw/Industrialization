@@ -5,12 +5,9 @@ import dmillerw.industrialization.block.tile.TileBlockDetector;
 import dmillerw.industrialization.block.tile.TileCore;
 import dmillerw.industrialization.core.handler.GuiHandler;
 import dmillerw.industrialization.lib.ModInfo;
-import dmillerw.industrialization.util.UtilEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -19,31 +16,17 @@ import net.minecraftforge.common.ForgeDirection;
 /**
  * Created by Dylan Miller on 1/19/14
  */
-public class BlockUtilityRedstone extends BlockCore {
+public class BlockUtility extends BlockCore {
 
     public static final String[] NAMES = new String[] {"block_detector"};
 
     public Icon[] icons;
 
-    public BlockUtilityRedstone(int id) {
+    public BlockUtility(int id) {
         super(id, Material.rock);
 
         setHardness(2F);
         setResistance(2F);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        if (!world.isRemote) {
-            TileCore tile = (TileCore) world.getBlockTileEntity(x, y, z);
-
-            if (tile != null) {
-                if (tile instanceof TileBlockDetector) {
-                    ((TileBlockDetector)tile).orientation = UtilEntity.determine3DOrientation_Forge(world, x, y, z, entity);
-                    world.markBlockForUpdate(x, y, z);
-                }
-            }
-        }
     }
 
     @Override

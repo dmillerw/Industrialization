@@ -1,7 +1,9 @@
 package dmillerw.industrialization.block.tile;
 
 import dmillerw.industrialization.block.BlockHandler;
+import dmillerw.industrialization.util.UtilEntity;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemBlock;
@@ -29,6 +31,13 @@ public class TileBlockDetector extends TileCore {
     }
 
     @Override
+    public void onBlockAdded(EntityPlayer player) {
+        if (player != null) {
+            orientation = UtilEntity.determine3DOrientation_Forge(worldObj, xCoord, yCoord, zCoord, player);
+        }
+    }
+
+    @Override
     public int getSignalStrength(ForgeDirection side) {
         return blockDetected ? 15 : 0;
     }
@@ -39,7 +48,7 @@ public class TileBlockDetector extends TileCore {
             boolean flag = blockDetected();
             if (flag != blockDetected) {
                 blockDetected = flag;
-                worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, BlockHandler.blockUtilityRedstoneID);
+                worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, BlockHandler.blockUtilityID);
             }
         }
     }

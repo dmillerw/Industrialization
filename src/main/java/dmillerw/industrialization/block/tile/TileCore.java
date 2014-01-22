@@ -20,7 +20,7 @@ public abstract class TileCore extends TileEntity {
 
     public boolean onBlockActivated(EntityPlayer player) { return false; }
 
-    public void onBlockAdded() {}
+    public void onBlockAdded(EntityPlayer player) {}
 
     public void onNeighborBlockUpdate() {}
 

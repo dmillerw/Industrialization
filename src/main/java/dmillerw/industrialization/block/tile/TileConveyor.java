@@ -1,7 +1,9 @@
 package dmillerw.industrialization.block.tile;
 
+import dmillerw.industrialization.util.UtilEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -36,6 +38,13 @@ public class TileConveyor extends TileCore {
 
     public float getRenderOffsetZ() {
         return zCoord + (progress * orientation.getOpposite().offsetZ);
+    }
+
+    @Override
+    public void onBlockAdded(EntityPlayer player) {
+        if (player != null) {
+            orientation = UtilEntity.determine2DOrientation_Forge(worldObj, xCoord, yCoord, zCoord, player);
+        }
     }
 
     @Override

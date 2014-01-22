@@ -5,14 +5,10 @@ import dmillerw.industrialization.block.tile.TileCore;
 import dmillerw.industrialization.client.render.block.RenderBlockConveyor;
 import dmillerw.industrialization.client.render.block.SimpleBlockRenderer;
 import dmillerw.industrialization.lib.ModInfo;
-import dmillerw.industrialization.util.UtilEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -27,18 +23,6 @@ public class BlockConveyor extends BlockCore {
 
         setHardness(2F);
         setResistance(2F);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-        if (!world.isRemote) {
-            TileCore tile = (TileCore) world.getBlockTileEntity(x, y, z);
-
-            if (tile != null && tile instanceof TileConveyor) {
-                ((TileConveyor)tile).orientation = UtilEntity.determine2DOrientation_Forge(world, x, y, z, entity);
-                world.markBlockForUpdate(x, y, z);
-            }
-        }
     }
 
     @Override

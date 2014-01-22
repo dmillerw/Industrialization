@@ -1,27 +1,19 @@
 package dmillerw.industrialization.block.item;
 
-import dmillerw.industrialization.block.BlockUtilityRedstone;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import dmillerw.industrialization.block.BlockUtility;
 
 /**
  * Created by Dylan Miller on 1/19/14
  */
-public class ItemBlockRedstone extends ItemBlock {
+public class ItemBlockRedstone extends ItemBlockCoreTile {
 
     public ItemBlockRedstone(int id) {
         super(id);
     }
 
     @Override
-    public int getMetadata(int meta) {
-        return meta;
+    public String[] getNameArray() {
+        return BlockUtility.NAMES;
     }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return "tile.utility." + BlockUtilityRedstone.NAMES[stack.getItemDamage()];
-    }
-
 
 }
