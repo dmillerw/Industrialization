@@ -23,11 +23,6 @@ public class BlockBoiler extends BlockCore {
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
