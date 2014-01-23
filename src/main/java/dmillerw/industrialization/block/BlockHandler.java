@@ -4,7 +4,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import dmillerw.industrialization.block.item.ItemBlockCoreTile;
 import dmillerw.industrialization.block.item.ItemBlockGeneral;
 import dmillerw.industrialization.block.item.ItemBlockRedstone;
+import dmillerw.industrialization.block.item.ItemBlockRope;
 import dmillerw.industrialization.block.tile.TileBlockDetector;
+import dmillerw.industrialization.block.tile.TileBoiler;
 import dmillerw.industrialization.block.tile.TileConveyor;
 import dmillerw.industrialization.block.tile.TileFilter;
 import dmillerw.industrialization.core.IDAllocator;
@@ -19,11 +21,15 @@ public class BlockHandler {
     public static int blockFilterID;
     public static int blockUtilityID;
     public static int blockConveyorID;
+    public static int blockRopeID;
+    public static int blockBoilerID;
 
     public static Block blockGeneral;
     public static Block blockFilter;
     public static Block blockUtility;
     public static Block blockConveyor;
+    public static Block blockRope;
+    public static Block blockBoiler;
 
     public static void initialize(IDAllocator config) {
         /* IDS */
@@ -31,6 +37,8 @@ public class BlockHandler {
         blockFilterID = config.getBlock("filter");
         blockUtilityID = config.getBlock("utility_redstone");
         blockConveyorID = config.getBlock("conveyor");
+        blockRopeID = config.getBlock("rope");
+        blockBoilerID = config.getBlock("boiler");
 
         /* INIT */
         blockGeneral = new BlockGeneral(blockGeneralID).setUnlocalizedName("general");
@@ -47,6 +55,13 @@ public class BlockHandler {
         blockConveyor = new BlockConveyor(blockConveyorID).setUnlocalizedName("conveyor");
         GameRegistry.registerBlock(blockConveyor, ItemBlockCoreTile.class, "conveyor");
         GameRegistry.registerTileEntity(TileConveyor.class, "conveyor_tile");
+
+        blockRope = new BlockRope(blockRopeID).setUnlocalizedName("rope");
+        GameRegistry.registerBlock(blockRope, ItemBlockRope.class, "rope");
+
+        blockBoiler = new BlockBoiler(blockBoilerID).setUnlocalizedName("boiler");
+        GameRegistry.registerBlock(blockBoiler, "boiler");
+        GameRegistry.registerTileEntity(TileBoiler.class, "boiler_tile");
     }
 
 }
