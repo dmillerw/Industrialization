@@ -12,7 +12,7 @@ public class LocalizationHandler {
 
     private static final String LANG_DIR = "/assets/" + ModInfo.NAME.toLowerCase() + "/lang";
 	
-	public static final String[] LANGS = new String[] {"en_US", "fr_CA", "de_DE"};
+	public static final String[] LANGS = new String[] {"en_US", "fr_CA", "de_DE", "sv_SE"};
 	
 	public static void initializeLocalization() {
 		for (String lang : LANGS) {
