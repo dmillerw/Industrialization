@@ -1,7 +1,10 @@
 package dmillerw.industrialization.block.item;
 
+import dmillerw.industrialization.lib.ModInfo;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -10,8 +13,25 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class ItemBlockAnchor extends ItemBlockCore {
 
+    private Icon icon;
+
     public ItemBlockAnchor(int id) {
         super(id);
+    }
+
+    @Override
+    public int getSpriteNumber() {
+        return 1;
+    }
+
+    @Override
+    public Icon getIconFromDamage(int damage) {
+        return icon;
+    }
+
+    @Override
+    public void registerIcons(IconRegister register) {
+        icon = register.registerIcon(ModInfo.RESOURCE_PREFIX + "anchor");
     }
 
     public boolean preBlockPlace(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitx, float hity, float hitz, int meta) {

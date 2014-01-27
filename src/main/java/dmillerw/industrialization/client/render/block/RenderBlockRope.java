@@ -21,7 +21,8 @@ public class RenderBlockRope extends SimpleBlockRenderer {
         renderer.renderStandardBlock(block, x, y, z);
 
         if (world.getBlockId(x, y + 1, z) == BlockHandler.blockAnchorID) {
-            renderer.setRenderBounds(0.375, 1F, 0.375, 0.625, 1F + ANCHOR_TOP, 0.625);
+            float anchorTop = world.getBlockMetadata(x, y + 1, z) == 1 ? ANCHOR_TOP : ANCHOR_TOP - (0.0625F * 2);
+            renderer.setRenderBounds(0.375, 1F, 0.375, 0.625, 1F + anchorTop, 0.625);
             renderer.renderStandardBlock(block, x, y, z);
         }
     }

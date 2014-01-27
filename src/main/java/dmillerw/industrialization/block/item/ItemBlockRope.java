@@ -1,7 +1,6 @@
 package dmillerw.industrialization.block.item;
 
 import dmillerw.industrialization.block.BlockHandler;
-import dmillerw.industrialization.block.BlockRope;
 import dmillerw.industrialization.lib.ModInfo;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -38,33 +37,38 @@ public class ItemBlockRope extends ItemBlockCore {
     }
 
     public boolean preBlockPlace(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitx, float hity, float hitz, int meta) {
-        if (BlockRope.isAttached(world, x, y, z)) {
-            return true;
-        } else { // If rope isn't directly considered attached, check to see if they simply right-clicked on a rope block
-            ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
-            Block rope = BlockHandler.blockRope;
-            int newX = x + dir.offsetX;
-            int newY = y + dir.offsetY;
-            int newZ = z + dir.offsetZ;
+        ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+        Block rope = BlockHandler.blockRope;
+        int newX = x + dir.offsetX;
+        int newY = y + dir.offsetY;
+        int newZ = z + dir.offsetZ;
 
-            if (world.getBlockId(newX, newY, newZ) == rope.blockID || world.getBlockId(newX, newY, newZ) == BlockHandler.blockAnchorID) {
-                while (world.getBlockId(newX, newY, newZ) == rope.blockID) {
-                    newY--;
+        if (world.getBlockId(newX, newY, newZ) == rope.blockID || world.getBlockId(newX, newY, newZ) == BlockHandler.blockAnchorID) {
+            if (world.isAirBlock(newX, newY - 1, newZ)) {
+                if (world.setBlock(newX, newY - 1, newZ, rope.blockID)) {
+                    world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), rope.stepSound.getPlaceSound(), (rope.stepSound.getVolume() + 1.0F) / 2.0F, rope.stepSound.getPitch() * 0.8F);
+                    --stack.stackSize;
+                }
 
-                    if (world.isAirBlock(newX, newY, newZ)) {
-                        if (world.setBlock(newX, newY, newZ, rope.blockID)) {
-                            world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), rope.stepSound.getPlaceSound(), (rope.stepSound.getVolume() + 1.0F) / 2.0F, rope.stepSound.getPitch() * 0.8F);
-                            --stack.stackSize;
+                return false;
+            }
 
-                            if (!player.isSneaking() || stack.stackSize <= 0) {
-                                break;
-                            }
+            while (world.getBlockId(newX, newY - 1, newZ) == rope.blockID) {
+                newY--;
+
+                if (world.isAirBlock(newX, newY, newZ)) {
+                    if (world.setBlock(newX, newY, newZ, rope.blockID)) {
+                        world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), rope.stepSound.getPlaceSound(), (rope.stepSound.getVolume() + 1.0F) / 2.0F, rope.stepSound.getPitch() * 0.8F);
+                        --stack.stackSize;
+
+                        if (!player.isSneaking() || stack.stackSize <= 0) {
+                            break;
                         }
                     }
                 }
-
-                return false; // To stop normal execution of block placement
             }
+
+            return false; // To stop normal execution of block placement
         }
 
         return false;
