@@ -1,5 +1,7 @@
 package dmillerw.industrialization.util;
 
+import java.io.IOException;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.Resource;
@@ -59,7 +61,7 @@ public class UtilIcon {
         return new ResourceLocation(mod + ":textures/" + (block ? "blocks/" : "items/") + name + ".png");
     }
 
-    public static Resource getResource(ResourceLocation location) {
+    public static Resource getResource(ResourceLocation location) throws IOException {
         return Minecraft.getMinecraft().getResourceManager().getResource(location);
     }
 
