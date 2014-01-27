@@ -38,40 +38,52 @@ public class ItemBlockRope extends ItemBlockCore {
 
     public boolean preBlockPlace(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitx, float hity, float hitz, int meta) {
         ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
+        Block anchor = BlockHandler.blockAnchor;
         Block rope = BlockHandler.blockRope;
         int newX = x + dir.offsetX;
         int newY = y + dir.offsetY;
         int newZ = z + dir.offsetZ;
 
-        if (world.getBlockId(newX, newY, newZ) == rope.blockID || world.getBlockId(newX, newY, newZ) == BlockHandler.blockAnchorID) {
+        int currID = world.getBlockId(newX, newY, newZ);
+
+        if (currID == anchor.blockID|| currID == rope.blockID) {
             if (world.isAirBlock(newX, newY - 1, newZ)) {
-                if (world.setBlock(newX, newY - 1, newZ, rope.blockID)) {
-                    world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), rope.stepSound.getPlaceSound(), (rope.stepSound.getVolume() + 1.0F) / 2.0F, rope.stepSound.getPitch() * 0.8F);
-                    --stack.stackSize;
+                if (player.isSneaking()) {
+                    placeRopesBelow(world, newX, newY, newZ, stack);
+                } else {
+                    placeRopeBelow(world, newX, newY, newZ, stack);
+                }
+            } else if (world.getBlockId(newX, newY - 1, newZ) == rope.blockID) {
+                while(world.getBlockId(newX, newY - 1, newZ) == rope.blockID) {
+                    newY--;
                 }
 
-                return false;
-            }
-
-            while (world.getBlockId(newX, newY - 1, newZ) == rope.blockID) {
-                newY--;
-
-                if (world.isAirBlock(newX, newY, newZ)) {
-                    if (world.setBlock(newX, newY, newZ, rope.blockID)) {
-                        world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), rope.stepSound.getPlaceSound(), (rope.stepSound.getVolume() + 1.0F) / 2.0F, rope.stepSound.getPitch() * 0.8F);
-                        --stack.stackSize;
-
-                        if (!player.isSneaking() || stack.stackSize <= 0) {
-                            break;
-                        }
-                    }
+                if (player.isSneaking()) {
+                    placeRopesBelow(world, newX, newY, newZ, stack);
+                } else {
+                    placeRopeBelow(world, newX, newY, newZ, stack);
                 }
             }
-
-            return false; // To stop normal execution of block placement
         }
 
         return false;
+    }
+
+    private boolean placeRopeBelow(World world, int x, int y, int z, ItemStack stack) {
+        if (stack.stackSize > 0 && world.isAirBlock(x, y - 1, z)) {
+            if (world.setBlock(x, y - 1, z, BlockHandler.blockRopeID, 0, 3)) {
+                world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y - 1 + 0.5F), (double)((float)z + 0.5F), BlockHandler.blockRope.stepSound.getPlaceSound(), (BlockHandler.blockRope.stepSound.getVolume() + 1.0F) / 2.0F, BlockHandler.blockRope.stepSound.getPitch() * 0.8F);
+                --stack.stackSize;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void placeRopesBelow(World world, int x, int y, int z, ItemStack stack) {
+        while(placeRopeBelow(world, x, y, z, stack)) {
+            y--;
+        }
     }
 
 }

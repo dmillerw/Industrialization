@@ -17,6 +17,7 @@ public class RenderBlockRope extends SimpleBlockRenderer {
 
     @Override
     public void renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer) {
+        renderer.renderAllFaces = true;
         renderer.setRenderBoundsFromBlock(block);
         renderer.renderStandardBlock(block, x, y, z);
 
@@ -25,6 +26,7 @@ public class RenderBlockRope extends SimpleBlockRenderer {
             renderer.setRenderBounds(0.375, 1F, 0.375, 0.625, 1F + anchorTop, 0.625);
             renderer.renderStandardBlock(block, x, y, z);
         }
+        renderer.renderAllFaces = false;
     }
 
 }
