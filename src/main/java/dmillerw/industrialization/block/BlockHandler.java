@@ -1,10 +1,7 @@
 package dmillerw.industrialization.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import dmillerw.industrialization.block.item.ItemBlockCoreTile;
-import dmillerw.industrialization.block.item.ItemBlockGeneral;
-import dmillerw.industrialization.block.item.ItemBlockRedstone;
-import dmillerw.industrialization.block.item.ItemBlockRope;
+import dmillerw.industrialization.block.item.*;
 import dmillerw.industrialization.block.tile.TileBlockDetector;
 import dmillerw.industrialization.block.tile.TileBoiler;
 import dmillerw.industrialization.block.tile.TileConveyor;
@@ -23,6 +20,7 @@ public class BlockHandler {
     public static int blockConveyorID;
     public static int blockRopeID;
     public static int blockBoilerID;
+    public static int blockAnchorID;
 
     public static Block blockGeneral;
     public static Block blockFilter;
@@ -30,6 +28,7 @@ public class BlockHandler {
     public static Block blockConveyor;
     public static Block blockRope;
     public static Block blockBoiler;
+    public static Block blockAnchor;
 
     public static void initialize(IDAllocator config) {
         /* IDS */
@@ -39,6 +38,7 @@ public class BlockHandler {
         blockConveyorID = config.getBlock("conveyor");
         blockRopeID = config.getBlock("rope");
         blockBoilerID = config.getBlock("boiler");
+        blockAnchorID = config.getBlock("anchor");
 
         /* INIT */
         blockGeneral = new BlockGeneral(blockGeneralID).setUnlocalizedName("general");
@@ -62,6 +62,9 @@ public class BlockHandler {
         blockBoiler = new BlockBoiler(blockBoilerID).setUnlocalizedName("boiler");
         GameRegistry.registerBlock(blockBoiler, "boiler");
         GameRegistry.registerTileEntity(TileBoiler.class, "boiler_tile");
+
+        blockAnchor = new BlockAnchor(blockAnchorID).setUnlocalizedName("anchor");
+        GameRegistry.registerBlock(blockAnchor, ItemBlockAnchor.class, "anchor");
     }
 
 }

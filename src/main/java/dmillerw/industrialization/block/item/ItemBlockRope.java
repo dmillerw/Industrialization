@@ -40,14 +40,14 @@ public class ItemBlockRope extends ItemBlockCore {
     public boolean preBlockPlace(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitx, float hity, float hitz, int meta) {
         if (BlockRope.isAttached(world, x, y, z)) {
             return true;
-        } else { // If rope isnt' directly considered attached, check to see if they simply right-clicked on a rope block
+        } else { // If rope isn't directly considered attached, check to see if they simply right-clicked on a rope block
             ForgeDirection dir = ForgeDirection.getOrientation(side).getOpposite();
             Block rope = BlockHandler.blockRope;
             int newX = x + dir.offsetX;
             int newY = y + dir.offsetY;
             int newZ = z + dir.offsetZ;
 
-            if (world.getBlockId(newX, newY, newZ) == rope.blockID) {
+            if (world.getBlockId(newX, newY, newZ) == rope.blockID || world.getBlockId(newX, newY, newZ) == BlockHandler.blockAnchorID) {
                 while (world.getBlockId(newX, newY, newZ) == rope.blockID) {
                     newY--;
 

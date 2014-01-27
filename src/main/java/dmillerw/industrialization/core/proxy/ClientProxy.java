@@ -3,7 +3,9 @@ package dmillerw.industrialization.core.proxy;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import dmillerw.industrialization.block.tile.TileConveyor;
+import dmillerw.industrialization.client.render.block.RenderBlockAnchor;
 import dmillerw.industrialization.client.render.block.RenderBlockConveyor;
+import dmillerw.industrialization.client.render.block.RenderBlockRope;
 import dmillerw.industrialization.client.render.tile.RenderTileConveyor;
 
 /**
@@ -16,6 +18,8 @@ public class ClientProxy extends ServerProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileConveyor.class, new RenderTileConveyor());
 
         RenderingRegistry.registerBlockHandler(new RenderBlockConveyor());
+        RenderingRegistry.registerBlockHandler(new RenderBlockAnchor());
+        RenderingRegistry.registerBlockHandler(new RenderBlockRope());
     }
 
 }
