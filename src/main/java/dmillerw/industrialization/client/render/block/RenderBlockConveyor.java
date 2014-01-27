@@ -25,6 +25,7 @@ public class RenderBlockConveyor extends SimpleBlockRenderer {
                 case EAST: renderer.uvRotateTop = 2; break;
                 case WEST: renderer.uvRotateTop = 1; break;
                 case SOUTH: renderer.uvRotateTop = 3; break;
+                default: break;
             }
         }
 
