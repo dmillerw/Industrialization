@@ -29,6 +29,7 @@ import dmillerw.industrialization.recipe.FilterManager;
 import dmillerw.industrialization.util.UtilString;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -113,6 +114,10 @@ public class Industrialization {
         GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockUtility, "SCS", "RBR", "SRS", 'S', "stone", 'C', Item.comparator, 'R', Item.redstone, 'B', Block.blockRedstone));
         // Conveyor
         GameRegistry.addRecipe(new ShapedOreRecipe(BlockHandler.blockConveyor, "III", "WBW", "III", 'I', Item.ingotIron, 'W', "plankWood", 'B', Block.fenceIron));
+        // Rope
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockRope, 16, 0), "S", "S", "S", 'S', Item.silk));
+        // Anchor
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockHandler.blockAnchor, 4, 0), "I  ", "III", "I  ", 'I', Item.ingotIron));
     }
 
     @Mod.EventHandler
