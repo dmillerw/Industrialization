@@ -3,6 +3,7 @@ package dmillerw.industrialization.inventory;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.industrialization.block.tile.TileBlockDetector;
+import dmillerw.industrialization.block.tile.TileItemDetector;
 import dmillerw.industrialization.inventory.phantom.ContainerPhantom;
 import dmillerw.industrialization.inventory.phantom.slot.SlotPhantom;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,18 +13,18 @@ import net.minecraft.inventory.Slot;
 /**
  * Created by Dylan Miller on 1/19/14
  */
-public class ContainerBlockDetector extends ContainerPhantom {
+public class ContainerItemDetector extends ContainerPhantom {
 
     private final EntityPlayer player;
 
-    private final TileBlockDetector tile;
+    private final TileItemDetector tile;
 
     private int lastRange = -1;
     
     private byte lastUseOreDictFlag = -1;
     private byte lastMetaFlag = -1;
     
-    public ContainerBlockDetector(EntityPlayer player, TileBlockDetector tile) {
+    public ContainerItemDetector(EntityPlayer player, TileItemDetector tile) {
         this.player = player;
         this.tile = tile;
 

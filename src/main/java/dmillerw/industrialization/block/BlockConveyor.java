@@ -7,8 +7,11 @@ import dmillerw.industrialization.client.render.block.SimpleBlockRenderer;
 import dmillerw.industrialization.lib.ModInfo;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -25,6 +28,11 @@ public class BlockConveyor extends BlockCore {
         setResistance(2F);
     }
 
+    @Override
+    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
+        //TODO Entity movement
+    }    
+    
     @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileCore tile = (TileCore) world.getBlockTileEntity(x, y, z);

@@ -1,9 +1,11 @@
 package dmillerw.industrialization.client.gui;
 
 import dmillerw.industrialization.block.tile.TileBlockDetector;
+import dmillerw.industrialization.block.tile.TileItemDetector;
 import dmillerw.industrialization.client.gui.button.GuiButtonCheckbox;
 import dmillerw.industrialization.client.gui.button.GuiButtonSmall;
 import dmillerw.industrialization.inventory.ContainerBlockDetector;
+import dmillerw.industrialization.inventory.ContainerItemDetector;
 import dmillerw.industrialization.lib.ModInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -17,9 +19,9 @@ import org.lwjgl.opengl.GL11;
 /**
  * Created by Dylan Miller on 1/19/14
  */
-public class GuiBlockDetector extends GuiContainer {
+public class GuiItemDetector extends GuiContainer {
 
-    private final TileBlockDetector tile;
+    private final TileItemDetector tile;
 
     private GuiButtonSmall rangeDec;
     private GuiButtonSmall rangeInc;
@@ -27,8 +29,8 @@ public class GuiBlockDetector extends GuiContainer {
     private GuiButtonCheckbox useOreDict;
     private GuiButtonCheckbox ignoreMeta;
     
-    public GuiBlockDetector(EntityPlayer player, TileBlockDetector tile) {
-        super(new ContainerBlockDetector(player, tile));
+    public GuiItemDetector(EntityPlayer player, TileItemDetector tile) {
+        super(new ContainerItemDetector(player, tile));
 
         this.tile = tile;
         
@@ -46,7 +48,7 @@ public class GuiBlockDetector extends GuiContainer {
     
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        String s = I18n.getString("tile.detector.block.name");
+        String s = I18n.getString("tile.detector.item.name");
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     

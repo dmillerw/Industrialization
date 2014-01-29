@@ -1,28 +1,34 @@
 package dmillerw.industrialization.block;
 
-import dmillerw.industrialization.Industrialization;
-import dmillerw.industrialization.block.tile.TileBlockDetector;
-import dmillerw.industrialization.block.tile.TileCore;
-import dmillerw.industrialization.core.handler.GuiHandler;
-import dmillerw.industrialization.lib.ModInfo;
+import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import dmillerw.industrialization.Industrialization;
+import dmillerw.industrialization.block.tile.TileBlockDetector;
+import dmillerw.industrialization.block.tile.TileCore;
+import dmillerw.industrialization.block.tile.TileDetector;
+import dmillerw.industrialization.block.tile.TileItemDetector;
+import dmillerw.industrialization.core.handler.GuiHandler;
+import dmillerw.industrialization.lib.ModInfo;
 
 /**
  * Created by Dylan Miller on 1/19/14
  */
-public class BlockUtility extends BlockCore {
+public class BlockDetector extends BlockCore {
 
-    public static final String[] NAMES = new String[] {"block_detector"};
+    public static final String[] NAMES = new String[] {"block", "item"};
 
     public Icon[] icons;
 
-    public BlockUtility(int id) {
+    public BlockDetector(int id) {
         super(id, Material.rock);
 
         setHardness(2F);
@@ -38,6 +44,11 @@ public class BlockUtility extends BlockCore {
                 switch(meta) {
                     case 0: {
                         player.openGui(Industrialization.instance, GuiHandler.GUI_BLOCK_DETECTOR, world, x, y, z);
+                        break;
+                    }
+                    
+                    case 1: {
+                        player.openGui(Industrialization.instance, GuiHandler.GUI_ITEM_DETECTOR, world, x, y, z);
                         break;
                     }
                 }
@@ -86,12 +97,18 @@ public class BlockUtility extends BlockCore {
     }
 
     @Override
+    public void getSubBlocks(int id, CreativeTabs tab, List list) {
+        list.add(new ItemStack(this, 0, 0));
+        list.add(new ItemStack(this, 0, 1));
+    }
+    
+    @Override
     public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int side) {
         TileCore tile = (TileCore) world.getBlockTileEntity(x, y, z);
 
         if (tile != null) {
-            if (tile instanceof TileBlockDetector) {
-                return (ForgeDirection.getOrientation(side) == ((TileBlockDetector)tile).orientation) ? icons[0] : icons[1];
+            if (tile instanceof TileDetector) {
+                return (ForgeDirection.getOrientation(side) == ((TileDetector)tile).orientation) ? icons[0] : icons[1];
             }
         }
 
@@ -100,7 +117,7 @@ public class BlockUtility extends BlockCore {
 
     @Override
     public Icon getIcon(int side, int meta) {
-        return side == 4 ? icons[0] : icons[1];
+        return side == 3 ? icons[0] : icons[1];
     }
 
     @Override
@@ -115,6 +132,7 @@ public class BlockUtility extends BlockCore {
     public TileCore getTile(int meta) {
         switch(meta) {
             case 0: return new TileBlockDetector();
+            case 1: return new TileItemDetector();
         }
         return null;
     }

@@ -6,6 +6,7 @@ import dmillerw.industrialization.block.tile.TileBlockDetector;
 import dmillerw.industrialization.block.tile.TileBoiler;
 import dmillerw.industrialization.block.tile.TileConveyor;
 import dmillerw.industrialization.block.tile.TileFilter;
+import dmillerw.industrialization.block.tile.TileItemDetector;
 import dmillerw.industrialization.core.IDAllocator;
 import net.minecraft.block.Block;
 
@@ -48,10 +49,11 @@ public class BlockHandler {
         GameRegistry.registerBlock(blockFilter, "filter");
         GameRegistry.registerTileEntity(TileFilter.class, "filter_tile");
 
-        blockUtility = new BlockUtility(blockUtilityID).setUnlocalizedName("utility");
-        GameRegistry.registerBlock(blockUtility, ItemBlockRedstone.class, "utility");
+        blockUtility = new BlockDetector(blockUtilityID).setUnlocalizedName("detector");
+        GameRegistry.registerBlock(blockUtility, ItemBlockDetector.class, "detector");
         GameRegistry.registerTileEntity(TileBlockDetector.class, "utility_block_detector_tile");
-
+        GameRegistry.registerTileEntity(TileItemDetector.class, "utility_item_detector_tile");
+        
         blockConveyor = new BlockConveyor(blockConveyorID).setUnlocalizedName("conveyor");
         GameRegistry.registerBlock(blockConveyor, ItemBlockCoreTile.class, "conveyor");
         GameRegistry.registerTileEntity(TileConveyor.class, "conveyor_tile");

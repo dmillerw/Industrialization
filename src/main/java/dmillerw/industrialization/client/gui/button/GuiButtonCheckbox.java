@@ -7,22 +7,23 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import dmillerw.industrialization.lib.ModInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiButtonCheckbox extends GuiButton {
 
-    private static final char CHECKED = 'X';
-    private static final char UN_CHECKED = 'O';
+    public static final ResourceLocation WIDGETS = new ResourceLocation(ModInfo.RESOURCE_PREFIX + "textures/gui/widgets.png");
     
     private String[] tooltip;
     
     public boolean state = false;
     
     public GuiButtonCheckbox(int id, int x, int y) {
-        super(id, x, y, 20, 20, "");
+        super(id, x, y, 9, 9, "");
     }
     
     public GuiButtonCheckbox setTooltip(String[] tooltip) {
@@ -32,15 +33,21 @@ public class GuiButtonCheckbox extends GuiButton {
     
     public void setState(boolean state) {
         this.state = state;
-        this.displayString = state ? Character.toString(CHECKED) : Character.toString(UN_CHECKED);
     }
     
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        super.drawButton(mc, mouseX, mouseY);
+        boolean mouseOver = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
         
-        if (drawButton && field_82253_i) {
-            drawHoveringText(Arrays.asList(this.tooltip), mouseX, mouseY, Minecraft.getMinecraft().fontRenderer);
+        if (drawButton) {
+            mc.getTextureManager().bindTexture(WIDGETS);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, state ? 0 : 9, 0, this.width, this.height);
+            
+            if (mouseOver) {
+                drawHoveringText(Arrays.asList(this.tooltip), mouseX, mouseY, Minecraft.getMinecraft().fontRenderer);
+            }
         }
     }
     
@@ -79,14 +86,6 @@ public class GuiButtonCheckbox extends GuiButton {
                 k1 += 2 + (list.size() - 1) * 10;
             }
 
-//            if (i1 + k > this.width) {
-//                i1 -= 28 + k;
-//            }
-//
-//            if (j1 + k1 + 6 > this.height) {
-//                j1 = this.height - k1 - 6;
-//            }
-
             this.zLevel = 300.0F;
             int l1 = -267386864;
             this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
@@ -113,10 +112,6 @@ public class GuiButtonCheckbox extends GuiButton {
             }
 
             this.zLevel = 0.0F;
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            RenderHelper.enableStandardItemLighting();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
     }
     
