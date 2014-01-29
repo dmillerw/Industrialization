@@ -100,7 +100,7 @@ public class BlockUtility extends BlockCore {
 
     @Override
     public Icon getIcon(int side, int meta) {
-        return icons[meta];
+        return side == 4 ? icons[0] : icons[1];
     }
 
     @Override

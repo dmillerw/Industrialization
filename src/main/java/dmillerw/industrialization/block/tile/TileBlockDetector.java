@@ -22,6 +22,8 @@ public class TileBlockDetector extends TileCore {
 
     public IInventory target = new InventoryBasic("Target", false, 1);
 
+    public int range = 1;
+    
     public boolean ignoreMeta = false;
     public boolean blockDetected = false;
 
@@ -30,6 +32,13 @@ public class TileBlockDetector extends TileCore {
         onNeighborBlockUpdate();
     }
 
+    @Override
+    public void updateEntity() {
+        if (!worldObj.isRemote && worldObj.getTotalWorldTime() % 4 == 0) { // Scan for blocks four times a second
+            onNeighborBlockUpdate();
+        }
+    }
+    
     @Override
     public void onBlockAdded(EntityPlayer player) {
         if (player != null) {
@@ -45,7 +54,7 @@ public class TileBlockDetector extends TileCore {
     @Override
     public void onNeighborBlockUpdate() {
         if (!worldObj.isRemote) {
-            boolean flag = blockDetected();
+            boolean flag = isBlockDetected();
             if (flag != blockDetected) {
                 blockDetected = flag;
                 worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, BlockHandler.blockUtilityID);
@@ -53,11 +62,31 @@ public class TileBlockDetector extends TileCore {
         }
     }
 
-    private boolean blockDetected() {
+    public void setRange(int range) {
+        this.range = range;
+        onNeighborBlockUpdate();
+    }
+    
+    public void setIgnoreMetaFlag(boolean flag) {
+        this.ignoreMeta = flag;
+        onNeighborBlockUpdate();
+    }
+    
+    private boolean isBlockDetected() {
+        for (int i=1; i<=range; i++) {
+            if (targetIsAtLocation(xCoord + (orientation.offsetX * i),  yCoord + (orientation.offsetY * i), zCoord + (orientation.offsetZ * i))) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    private boolean targetIsAtLocation(int x, int y, int z) {
         ItemStack targetStack = target.getStackInSlot(0);
 
-        int id = worldObj.getBlockId(xCoord + orientation.offsetX, yCoord + orientation.offsetY, zCoord + orientation.offsetZ);
-        int meta = worldObj.getBlockMetadata(xCoord + orientation.offsetX, yCoord + orientation.offsetY, zCoord + orientation.offsetZ);
+        int id = worldObj.getBlockId(x, y, z);
+        int meta = worldObj.getBlockMetadata(x, y, z);
 
         Block block = Block.blocksList[id];
 
@@ -70,7 +99,7 @@ public class TileBlockDetector extends TileCore {
         }
 
         if (targetStack.getItem() instanceof ItemBlock) {
-            return targetStack.itemID == id && (!ignoreMeta && targetStack.getItemDamage() == meta);
+            return targetStack.itemID == id && (ignoreMeta || targetStack.getItemDamage() == meta);
         } else {
             ItemStack picked = block.getPickBlock(new MovingObjectPosition(xCoord, yCoord, zCoord, orientation.getOpposite().ordinal(), Vec3.createVectorHelper(xCoord, yCoord, zCoord)), worldObj, xCoord, yCoord, zCoord);
 
@@ -78,10 +107,10 @@ public class TileBlockDetector extends TileCore {
                 return false;
             }
 
-            return targetStack.itemID == picked.itemID && (!ignoreMeta && targetStack.getItemDamage() == picked.getItemDamage());
+            return targetStack.itemID == picked.itemID && (ignoreMeta || targetStack.getItemDamage() == picked.getItemDamage());
         }
     }
-
+    
     @Override
     public void writeCustomNBT(NBTTagCompound nbt) {
         nbt.setByte("orientation", (byte) orientation.ordinal());
@@ -91,6 +120,7 @@ public class TileBlockDetector extends TileCore {
             nbt.setCompoundTag("target", tag);
         }
         nbt.setBoolean("ignoreMeta", ignoreMeta);
+        nbt.setInteger("range", range);
     }
 
     @Override
@@ -102,6 +132,7 @@ public class TileBlockDetector extends TileCore {
             target.setInventorySlotContents(0, null);
         }
         ignoreMeta = nbt.getBoolean("ignoreMeta");
+        range = nbt.getInteger("range");
     }
 
 }
