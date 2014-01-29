@@ -78,7 +78,7 @@ public class TileConveyor extends TileCore {
                 return;
             }
 
-            List<EntityLivingBase> intersectingEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(mX, yCoord, mZ, mX + 1, yCoord + 1, mZ + 1));
+            List<EntityLivingBase> intersectingEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(mX, yCoord + 1, mZ, mX + 1, yCoord + 2, mZ + 1));
             if (intersectingEntities != null && intersectingEntities.size() > 0) {
                 return;
             }

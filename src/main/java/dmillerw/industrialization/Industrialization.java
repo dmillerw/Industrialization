@@ -97,6 +97,7 @@ public class Industrialization {
         MinecraftForge.EVENT_BUS.register(OreHandler.INSTANCE);
 
         proxy.registerRenders();
+        proxy.registerFluids();
     }
 
     @Mod.EventHandler

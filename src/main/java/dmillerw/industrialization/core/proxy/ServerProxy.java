@@ -12,10 +12,13 @@ public class ServerProxy {
 
     public void registerRenders() {}
 
-    public void initFluids() {
-        fluidSteam = new Fluid("steam").setLuminosity(0).setDensity(-1000).setViscosity(100).setTemperature(1300).setGaseous(true);
-
-        FluidRegistry.registerFluid(fluidSteam);
+    public void registerFluids() {
+        if (!FluidRegistry.isFluidRegistered("steam")) {
+            Fluid steam = new Fluid("steam").setLuminosity(0).setDensity(-1000).setViscosity(100).setTemperature(1300).setGaseous(true);
+            FluidRegistry.registerFluid(steam);
+        }
+        
+        fluidSteam = FluidRegistry.getFluid("steam");
     }
 
 }
