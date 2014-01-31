@@ -2,8 +2,8 @@ package dmillerw.industrialization.block;
 
 import dmillerw.industrialization.block.tile.TileCore;
 import dmillerw.industrialization.block.tile.TileFilter;
+import dmillerw.industrialization.client.render.block.SimpleBlockRenderer;
 import dmillerw.industrialization.lib.ModInfo;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
@@ -13,7 +13,7 @@ import net.minecraft.util.Icon;
  */
 public class BlockFilter extends BlockCore {
 
-    public Icon icon;
+    public Icon[] icons;
 
     public BlockFilter(int id) {
         super(id, Material.iron);
@@ -24,12 +24,15 @@ public class BlockFilter extends BlockCore {
 
     @Override
     public Icon getIcon(int side, int meta) {
-        return (side == 1 || side == 0) ? icon : Block.planks.getIcon(0, 0);
+        return (side == 1 || side == 0) ? icons[0] : icons[1];
     }
 
     @Override
     public void registerIcons(IconRegister register) {
-        icon = register.registerIcon(ModInfo.RESOURCE_PREFIX + "filter");
+        icons = new Icon[2];
+
+        icons[0] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "filter");
+        icons[1] = register.registerIcon(ModInfo.RESOURCE_PREFIX + "filter_side");
     }
 
     @Override

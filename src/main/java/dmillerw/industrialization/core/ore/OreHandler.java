@@ -90,10 +90,14 @@ public class OreHandler {
         }
     }
 
-    /** Clears out any registered ores that don't have both a block and a dust defined */
+    /** Clears out any registered ores that don't have both a block, grinding, dust defined */
     public void clean() {
         for (OreWrapper ore : getRegisteredOres()) {
-            if (ore.getOreBlocks().length == 0 || ore.getDust() == null) {
+            if (ore.getOreBlocks().length == 0 || ore.getGrinding() == null || ore.getDust() == null) {
+                System.out.println("Removed " + ore.oreTag);
+                System.out.println("Block length: " + ore.getOreBlocks().length);
+                System.out.println("Grinding: " + ore.getGrinding());
+                System.out.println("Dust: " + ore.getDust());
                 registeredOres.remove(ore.oreTag);
             }
         }
@@ -102,6 +106,12 @@ public class OreHandler {
     public void fillGrindings() {
         for (OreWrapper ore : getRegisteredOres()) {
             ore.generateGrinding();
+        }
+    }
+
+    public void fillDusts() {
+        for (OreWrapper ore : getRegisteredOres()) {
+            ore.generateDust();
         }
     }
 

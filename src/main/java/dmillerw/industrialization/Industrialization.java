@@ -30,8 +30,10 @@ import dmillerw.industrialization.util.UtilString;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import java.io.File;
@@ -123,9 +125,19 @@ public class Industrialization {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        OreHandler.INSTANCE.fillGrindings();
+        OreHandler.INSTANCE.fillDusts();
+
+        // Registration of Industrialization vanilla dusts
+        ItemStack dustGold = new ItemStack(ItemHandler.itemDust, 1, 0);
+        ItemStack dustIron = new ItemStack(ItemHandler.itemDust, 1, 1);
+        OreDictionary.registerOre("dustGold", dustGold);
+        OreDictionary.registerOre("dustIron", dustIron);
+        FurnaceRecipes.smelting().addSmelting(dustGold.itemID, dustGold.getItemDamage(), new ItemStack(Item.ingotGold), 1.0F);
+        FurnaceRecipes.smelting().addSmelting(dustIron.itemID, dustIron.getItemDamage(), new ItemStack(Item.ingotIron), 1.0F);
+
         // It's assumed that all ore dictionary registrations have been completed by the time we hit post-init
         OreHandler.INSTANCE.clean();
-        OreHandler.INSTANCE.fillGrindings();
 
         CrushingManager.INSTANCE.initializeRecipes();
         FilterManager.INSTANCE.initializeRecipes();

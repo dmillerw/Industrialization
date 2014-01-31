@@ -43,8 +43,12 @@ public class ItemGrinding extends Item {
         setCreativeTab(TabIndustrialization.TAB);
     }
 
-    private int getColorFromOre(String oreTag) {
+    public static int getColorFromOre(String oreTag) {
         if (oreTag.equals("NULL")) {
+            return 0xFFFFFF;
+        }
+
+        if (OreHandler.INSTANCE.getOre(oreTag).getOreBlocks().length == 0) {
             return 0xFFFFFF;
         }
 

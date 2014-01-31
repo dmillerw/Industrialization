@@ -10,16 +10,21 @@ import net.minecraft.item.Item;
 public class ItemHandler {
 
     public static int itemGrindingID;
+    public static int itemDustID;
 
     public static Item itemGrinding;
+    public static Item itemDust;
 
     public static void initialize(IDAllocator config) {
         /* IDS */
         itemGrindingID = config.getItem("grinding");
+        itemDustID = config.getItem("dust");
 
         /* INIT */
         itemGrinding = new ItemGrinding(itemGrindingID).setUnlocalizedName("grinding");
         GameRegistry.registerItem(itemGrinding, "grinding");
+        itemDust = new ItemDust(itemDustID).setUnlocalizedName("dust");
+        GameRegistry.registerItem(itemDust, "dust");
     }
 
 }

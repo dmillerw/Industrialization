@@ -30,10 +30,22 @@ public class OreWrapper {
     }
 
     public void generateGrinding() {
-        this.grinding = new ItemStack(ItemHandler.itemGrinding, 1, Industrialization.instance.grindingMapper.getID("grinding_" + this.oreTag, true));
-        OreDictionary.registerOre("grinding" + oreTag, this.grinding);
-        if (OreHandler.ic2Support && Loader.isModLoaded("IC2")) {
-            OreDictionary.registerOre("crushed" + oreTag, this.grinding); // IC2 support
+        if (grinding == null) {
+            grinding = new ItemStack(ItemHandler.itemGrinding, 1, Industrialization.instance.grindingMapper.getID("grinding_" + this.oreTag, true));
+            OreDictionary.registerOre("grinding" + oreTag, grinding);
+            if (OreHandler.ic2Support && Loader.isModLoaded("IC2")) {
+                OreDictionary.registerOre("crushed" + oreTag, grinding); // IC2 support
+            }
+        }
+    }
+
+    public void generateDust() {
+        if (dust == null) {
+            if (oreTag.equalsIgnoreCase("gold")) {
+                dust = new ItemStack(ItemHandler.itemDust, 1, 0);
+            } else if (oreTag.equalsIgnoreCase("iron")) {
+                dust = new ItemStack(ItemHandler.itemDust, 1, 1);
+            }
         }
     }
 
