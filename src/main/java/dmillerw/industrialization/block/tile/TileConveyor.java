@@ -101,6 +101,16 @@ public class TileConveyor extends TileCore {
                         TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
 
                         if (tile != null) {
+                            // Blacklist multiparts
+                            if (tile.getClass().getName().contains("TileMultipart")) {
+                                storedID = 0;
+                                storedMeta = 0;
+                                tileData = null;
+                                progress = 0.0F;
+
+                                return;
+                            }
+
                             NBTTagCompound nbt = new NBTTagCompound();
                             tile.writeToNBT(nbt);
                             nbt.setInteger("x", mX);
