@@ -1,9 +1,27 @@
 package dmillerw.industrialization.util;
 
+import net.minecraft.client.gui.FontRenderer;
+
 /**
  * Created by Dylan Miller on 1/4/14
  */
 public class UtilString {
+
+    public static String squish(String string, FontRenderer renderer, int length) {
+        if (renderer.getStringWidth(string) >= length) {
+            return string;
+        }
+
+        int index = 0;
+        StringBuilder sb = new StringBuilder();
+        while((renderer.getStringWidth(sb.toString()) + renderer.getStringWidth("....")) > length) {
+            sb.append(string.charAt(index));
+            index++;
+        }
+
+        sb.append("...");
+        return sb.toString();
+    }
 
     public static String capitalize(String string) {
         StringBuffer sb = new StringBuffer();
