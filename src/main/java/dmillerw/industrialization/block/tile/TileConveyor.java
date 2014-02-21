@@ -24,8 +24,6 @@ public class TileConveyor extends TileCore {
     public int storedID = 0;
     public int storedMeta = 0;
 
-    public NBTTagCompound tileData;
-
     public boolean redstoneState = false;
 
     public float getRenderOffsetX() {
@@ -97,48 +95,16 @@ public class TileConveyor extends TileCore {
                 if (block != null && !block.isAirBlock(worldObj, xCoord, yCoord + 1, zCoord)) {
                     storedID = block.blockID;
                     storedMeta = meta;
-                    if (block.hasTileEntity(meta)) {
-                        TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
-
-                        if (tile != null) {
-                            // Blacklist multiparts
-                            if (tile.getClass().getName().contains("TileMultipart")) {
-                                storedID = 0;
-                                storedMeta = 0;
-                                tileData = null;
-                                progress = 0.0F;
-
-                                return;
-                            }
-
-                            NBTTagCompound nbt = new NBTTagCompound();
-                            tile.writeToNBT(nbt);
-                            nbt.setInteger("x", mX);
-                            nbt.setInteger("y", mY);
-                            nbt.setInteger("z", mZ);
-                            tileData = nbt;
-
-                            worldObj.removeBlockTileEntity(xCoord, yCoord + 1, zCoord);
-                        }
-                    }
                     worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 }
             } else if (progress == 1.0F && storedID > 0) {
                 worldObj.setBlock(mX, mY, mZ, storedID, storedMeta, 3);
-                if (tileData != null) {
-                    TileEntity tile = worldObj.getBlockTileEntity(mX, mY, mZ);
-
-                    if (tile != null) {
-                        tile.readFromNBT(tileData);
-                    }
-                }
                 worldObj.setBlockMetadataWithNotify(mX, mY, mZ, storedMeta, 3);
                 worldObj.markBlockForUpdate(mX, mY, mZ);
 
                 storedID = 0;
                 storedMeta = 0;
-                tileData = null;
                 progress = 0.0F;
 
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -159,9 +125,6 @@ public class TileConveyor extends TileCore {
         nbt.setFloat("progress", progress);
         nbt.setInteger("storedID", storedID);
         nbt.setInteger("storedMeta", storedMeta);
-        if (tileData != null) {
-            nbt.setCompoundTag("tileData", tileData);
-        }
     }
 
     @Override
@@ -171,11 +134,6 @@ public class TileConveyor extends TileCore {
         progress = nbt.getFloat("progress");
         storedID = nbt.getInteger("storedID");
         storedMeta = nbt.getInteger("storedMeta");
-        if (nbt.hasKey("tileData")) {
-            tileData = nbt.getCompoundTag("tileData");
-        } else {
-            tileData = null;
-        }
     }
 
 }
