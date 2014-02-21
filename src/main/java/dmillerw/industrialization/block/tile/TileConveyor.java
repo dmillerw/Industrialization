@@ -92,7 +92,7 @@ public class TileConveyor extends TileCore {
                 Block block = Block.blocksList[worldObj.getBlockId(xCoord, yCoord + 1, zCoord)];
                 int meta = worldObj.getBlockMetadata(xCoord, yCoord + 1, zCoord);
 
-                if (block != null && !block.isAirBlock(worldObj, xCoord, yCoord + 1, zCoord)) {
+                if (block != null && !block.hasTileEntity(meta) && !block.isAirBlock(worldObj, xCoord, yCoord + 1, zCoord)) {
                     storedID = block.blockID;
                     storedMeta = meta;
                     worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
