@@ -48,11 +48,7 @@ public class RenderTileConveyor extends TileEntitySpecialRenderer {
             stored.setBlockBoundsBasedOnState(tile.worldObj, tile.xCoord, tile.yCoord + 1, tile.zCoord);
             renderer.setRenderBoundsFromBlock(stored);
 
-            if (tile.tileData == null) {
-                StaticBlockRenderer.renderBlock(stored, tile.storedMeta, tile.xCoord, tile.yCoord + 1, tile.zCoord, renderer, tile.worldObj);
-            } else {
-                renderer.renderBlockAllFaces(Block.planks, tile.xCoord, tile.yCoord + 1, tile.zCoord);
-            }
+            StaticBlockRenderer.renderBlock(stored, tile.storedMeta, tile.xCoord, tile.yCoord + 1, tile.zCoord, renderer, tile.worldObj);
 
             tessellator.setTranslation(0, 0, 0);
             tessellator.draw();
