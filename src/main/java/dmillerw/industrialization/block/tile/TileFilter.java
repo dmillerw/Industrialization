@@ -64,8 +64,8 @@ public class TileFilter extends TileCore {
                 if (currentProcessingTime == 0) { // If done, pop from stack and produce result
                     ItemStack item = processingQueue.pop();
                     FilterRecipe recipe = FilterManager.INSTANCE.getRecipeFor(item);
-                    EntityItem entity = new EntityItem(worldObj, xCoord + 0.5, yCoord - 0.5, zCoord + 0.5, recipe.getOutput());
-                    worldObj.spawnEntityInWorld(entity);
+
+                    UtilStack.dropStack(worldObj, xCoord, yCoord - 1, zCoord, recipe.getOutput(), false);
 
                     // If still has items, restart process
                     if (processingQueue.size() > 0) {
